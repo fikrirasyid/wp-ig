@@ -1,5 +1,5 @@
 <?php
-class WP_IG_QueryStrings{
+class WP_IG_Current_Page{
 	/**
 	 * Get query string value. Return as false if no query string is stated
 	 * 
@@ -7,7 +7,7 @@ class WP_IG_QueryStrings{
 	 * 
 	 * return bool|string
 	 */
-	function get( $key ){
+	function query_string( $key ){
 		if( isset( $_GET[$key] ) ){
 			return $_GET[$key];
 		} else {
