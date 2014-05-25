@@ -258,8 +258,14 @@ class WP_IG_Dashboard{
 		$current_time = current_time( 'timestamp' );
 		?>
 		<div class="item">
-			<div class="image">
-				<img src="<?php echo $item->images->standard_resolution->url; ?>" alt="<?php echo $item->caption->text; ?>">
+			<div class="image">	
+				<?php if( isset( $item->videos->standard_resolution ) ) : ?>
+					<video controls loop>
+						<source src="<?php echo $item->videos->standard_resolution->url; ?>"></source>
+					</video>
+				<?php else : ?>
+					<img src="<?php echo $item->images->standard_resolution->url; ?>" alt="<?php echo $item->caption->text; ?>">
+				<?php endif; ?>
 			</div>
 			<div class="user">
 				<div class="avatar">
