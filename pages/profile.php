@@ -25,6 +25,16 @@
 			<a href="#" id="deauth-instagram">Disconnect this account</a>
 		</div>
 	</div>
+	
+	<h2 id='feed-title'>
+	<?php
+		if( $this->qs->get('tag_name') ){
+			echo "#{$this->qs->get('tag_name')}";
+		} else {
+			_e( "Your Instagram Media", "wp_ig" );
+		}
+	?>
+	</h2>
 
 	<div id="feed">
 		<?php 
