@@ -9,6 +9,7 @@ class WP_IG_Dashboard{
 	var $client_secret;
 	var $authorization_url;
 	var $exchange_code;
+	var $qs;
 
 	function __construct(){
 		$this->prefix 				= 'wp_ig_';
@@ -18,6 +19,7 @@ class WP_IG_Dashboard{
 		$this->redirect_uri_encoded = urlencode( $this->redirect_uri );
 		$this->authorization_url 	= "https://api.instagram.com/oauth/authorize/?client_id={$this->client_id}&redirect_uri={$this->redirect_uri_encoded}&response_type=code";		
 		$this->exchange_code 		= get_option( "{$this->prefix}exchange_code" );
+		$this->qs 					= new WP_IG_QueryStrings;
 
 		// If user is currently on wp_ig pages
 		if( isset( $_GET['page'] ) && substr( $_GET['page'], 0, 5 ) == "wp_ig" ){
@@ -46,6 +48,16 @@ class WP_IG_Dashboard{
 		if( $this->client_id && $this->client_secret && $this->client_id != '' && $this->client_secret != '' ){
 			add_submenu_page( 'wp_ig', __( 'Setup', 'wp_ig' ), __( 'Setup', 'wp_ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );
 		}
+	}
+
+	/**
+	 * Initiating api class as method
+	 * 
+	 */
+	function api(){
+		$api = new WP_IG_API( get_option( "{$this->prefix}access_token" ) );
+
+		return $api;
 	}
 
 	/**
@@ -178,6 +190,11 @@ class WP_IG_Dashboard{
 		die();		
 	}
 
+	/**
+	 * Deauth instagram account by deleting options value
+	 * 
+	 * @return void
+	 */
 	function page_deauth(){
 
 		// Disconnecting...
@@ -200,6 +217,75 @@ class WP_IG_Dashboard{
 			</script>
 		<?php		
 		die();
+	}
+
+	/**
+	 * Display items based on data fetched through API
+	 * 
+	 * @param obj fetched from API
+	 * 
+	 * @return void
+	 */
+	function display_items( $data, $context = 'index' ){
+		if( isset( $data->data ) && !empty( $data->data ) ){
+			foreach ($data->data as $item) {
+				$this->the_item( $item, $context );		
+			}
+
+			if( isset( $data->pagination->next_max_id ) ){
+				$more_link = admin_url() . "admin.php?page=wp_ig&max_id=" . $data->pagination->next_max_id;
+
+				printf( __( "<a href='%s' class='more-items'>Load More</a>", "wp_ig" ), $more_link );				
+			}
+		} else {
+			_e( "Cannot connect to Instagram", "wp_ig" );
+		}
+	}
+
+	function the_item( $item, $context = 'index' ){
+		$current_time = current_time( 'timestamp' );
+		?>
+		<div class="item">
+			<div class="image">
+				<img src="<?php echo $item->images->standard_resolution->url; ?>" alt="<?php echo $item->caption->text; ?>">
+			</div>
+			<div class="user">
+				<div class="avatar">
+					<img src="<?php echo $item->user->profile_picture; ?>" alt="<?php echo $item->user->full_name; ?>">
+				</div>
+				<div class="caption">
+					<a href="" title="<?php echo $item->user->full_name; ?>"><?php echo $item->user->username; ?></a> <?php if( isset( $item->caption->text ) ) echo $item->caption->text; ?>
+				</div>
+			</div>
+			<div class="comments">
+				<?php if( isset( $item->comments->count ) ) printf( ngettext( "%d Comment", "%d Comments", $item->comments->count ), $item->comments->count ); ?>
+			</div>
+			<div class="likes">
+				<?php if( isset( $item->likes->count ) ) printf( ngettext( "%d Like", "%d Likes", $item->likes->count ), $item->likes->count ); ?>				
+			</div>
+			<?php if( !empty( $item->tags ) ) : ?>
+				<div class="tags">
+					<?php		
+						$tag_index = 0;			
+						foreach ($item->tags as $tag) {
+							$tag_index++;
+							if( $tag_index > 1 )
+								echo ", ";
+							printf( __( "<a href='%s' title='View all #%s posts'>#%s</a>", "wp_ig" ), admin_url() . "admin.php?page=wp_ig&search=" . urlencode( $tag ), $tag, $tag );
+						}
+					?>
+				</div>
+			<?php endif; ?>
+			<div class="time">
+				<?php echo human_time_diff( $item->created_time, $current_time ) . __( " ago", "wp_ig" ); ?> / <?php echo date( "l, j F Y H:I" ); ?>
+			</div>
+
+<!-- 			<pre>
+				<?php //print_r( $item ); ?>					
+			</pre> -->
+		</div>
+		<br><br>
+		<?php
 	}
 }
 new WP_IG_Dashboard;
