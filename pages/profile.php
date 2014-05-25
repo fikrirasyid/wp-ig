@@ -28,10 +28,18 @@
 
 	<div id="feed">
 		<?php 
-			$feed = $this->api()->get_user_media( array( 
-				'max_id' => $this->qs->max_id(),
-				'user_id' => $account->id
-			) ); 
+			if( $this->qs->get( 'tag_name' ) ){
+				$feed = $this->api()->get_tag_media( array( 
+					'max_id' => $this->qs->get( 'max_id' ),
+					'tag_name' => sanitize_text_field( $this->qs->get( 'tag_name' ) )
+				) ); 
+			} else {
+				$feed = $this->api()->get_user_media( array( 
+					'max_id' => $this->qs->get( 'max_id' ),
+					'user_id' => $account->id
+				) ); 				
+			}
+
 			$this->display_items( $feed );
 		?>
 	</div>

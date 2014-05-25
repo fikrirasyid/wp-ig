@@ -115,4 +115,38 @@ class WP_IG_API{
 
 		return $this->get( $endpoint );
 	}
+
+	// TAGS ---------------------------------
+
+	/**
+	 * Get tags' media
+	 * 
+	 * @param of arguments
+	 * 
+	 * @return obj
+	 */
+	function get_tag_media( $args ){
+
+		// Setup default values
+		$defaults = array(
+			'tag_name' 		=> 0,
+			'min_id'		=> false,
+			'max_id'		=> false
+		);
+
+		// parse arguments
+		$args = wp_parse_args( $args, $defaults );
+
+		// Define endpoint
+		$endpoint = "https://api.instagram.com/v1/tags/{$args['tag_name']}/media/recent?access_token={$this->access_token}";
+
+		// Pushes more parameters
+		foreach ($args as $key => $param) {
+			if( $param ){
+				$endpoint .= "&{$key}={$param}";
+			}
+		}
+
+		return $this->get( $endpoint );
+	}
 }
