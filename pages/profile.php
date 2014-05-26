@@ -1,13 +1,31 @@
 <div class="wrap">
 	<?php
-		$account = get_option( "{$this->prefix}account" );
 		$access_token = get_option( "{$this->prefix}access_token" );
+
+		// Determine if this is another user's page or current user page
+		if( $this->current_page->query_string( 'username' ) ){
+
+			// Get username
+			$username = sanitize_text_field( $this->current_page->query_string( 'username' ) );
+
+			// Get username data from instagram API
+			$user = $this->api()->get_user_search( array( 'q' => $username ) );
+
+			if( isset( $user->data[0] ) ){
+				$account = $user->data[0];
+			} else {
+				$account = false;
+			}
+
+		} else {
+			$account = get_option( "{$this->prefix}account" );
+		}
 
 		// Display connect or profile page based on current user log in state
 		if( $account ) :
 	?>
 	
-	<h2>Your Account</h2>
+	<h2><?php _e( "Instagram", "wp_ig" ); ?></h2>
 
 	<div id="current-instagram-profile">
 		<div class="avatar">
@@ -22,7 +40,7 @@
 				<?php echo wpautop( $account->bio ); ?>
 			</div>			
 
-			<a href="#" id="deauth-instagram">Disconnect this account</a>
+			<a href="#" id="deauth-instagram"><?php _e( "Disconnect", "wp_ig" ); ?></a>
 		</div>
 	</div>
 	
@@ -30,6 +48,10 @@
 	<?php
 		if( $this->current_page->query_string('tag_name') ){
 			echo "#{$this->current_page->query_string('tag_name')}";
+		} elseif( $this->current_page->query_string( 'username' ) ){			
+
+			printf( __( "@%s's Feed", "wp_ig" ), $username );
+			
 		} else {
 			_e( "Your Instagram Media", "wp_ig" );
 		}
@@ -37,15 +59,20 @@
 	</h2>
 
 	<div id="feed">
-		<?php 
-			
+		<?php 	
 			if( $this->current_page->query_string( 'tag_name' ) ){
+
+				// Hashtag page		
+
 				$method = "get_tag_media";
 				$args = array( 
 					'max_id' => $this->current_page->query_string( 'max_id' ),
 					'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
 				);
 			} else {
+
+				// Default
+
 				$method = "get_user_media";
 				$args = array( 
 					'max_id' => $this->current_page->query_string( 'max_id' ),
@@ -66,17 +93,22 @@
 	</script>	
 
 	<?php else : ?>
+	
+		<?php if( isset( $username ) ): ?>
+			<h2><?php _e( "Not Found", "wp_ig" ); ?></h2>
+			<p><?php printf( __( "%s's profile cannot be found.", "wp_ig"), $username ); ?></p>
+		<?php else: ?>
+			<h2><?php _e( "Connect Your Account", "wp_ig" ); ?></h2>
 
-	<h2><?php _e( "Connect Your Account", "wp_ig" ); ?></h2>
-
-	<p><a href="#" id="auth-instagram" title="<?php _e( "Connect To Instagram", "wp_ig" ); ?>"><?php _e( "Connect To Instagram", "wp_ig" ); ?></a></p>
-	<script type="text/javascript">
-		jQuery(document).ready(function($){
-			$('#auth-instagram').click(function(e){
-				InstagramAuthWindow = window.open('<?php echo $this->authorization_url; ?>', 'Instagram Authorization', 'width=800,height=400');	
-			});
-		});
-	</script>	
+			<p><a href="#" id="auth-instagram" title="<?php _e( "Connect To Instagram", "wp_ig" ); ?>"><?php _e( "Connect To Instagram", "wp_ig" ); ?></a></p>
+			<script type="text/javascript">
+				jQuery(document).ready(function($){
+					$('#auth-instagram').click(function(e){
+						InstagramAuthWindow = window.open('<?php echo $this->authorization_url; ?>', 'Instagram Authorization', 'width=800,height=400');	
+					});
+				});
+			</script>	
+		<?php endif; ?>
 
 	<?php endif; ?>
 </div>
