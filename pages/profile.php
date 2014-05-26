@@ -38,19 +38,22 @@
 
 	<div id="feed">
 		<?php 
+			
 			if( $this->current_page->query_string( 'tag_name' ) ){
-				$feed = $this->api()->get_tag_media( array( 
+				$method = "get_tag_media";
+				$args = array( 
 					'max_id' => $this->current_page->query_string( 'max_id' ),
 					'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
-				) ); 
+				);
 			} else {
-				$feed = $this->api()->get_user_media( array( 
+				$method = "get_user_media";
+				$args = array( 
 					'max_id' => $this->current_page->query_string( 'max_id' ),
 					'user_id' => $account->id
-				) ); 				
+				);
 			}
 
-			$this->display_items( $feed );
+			$this->templates->display( $method, $args );
 		?>
 	</div>
 
