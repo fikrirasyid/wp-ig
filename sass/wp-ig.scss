@@ -29,7 +29,6 @@
 		}
 
 		.meta{
-			padding: 10px;
 			position: relative;
 			background: #fefefe;
 			border-bottom: 1px solid #dfdfdf;
@@ -60,7 +59,7 @@
 			font-size: 14px;
 
 			.username{
-				margin: 0 0 10px;
+				margin: 18px 0 5px;
 				font-weight: bold;
 			}
 
@@ -74,8 +73,7 @@
 			}
 		}
 	
-		.info,
-		.comments{
+		.info{
 			border-bottom: 1px solid #dfdfdf;
 			padding:5px 10px 5px 70px;
 		}
@@ -85,12 +83,37 @@
 			margin-bottom: -3px;
 		}
 
-		.comments,
 		.likes{			
 			font-size: 11px;
 			text-transform: uppercase;
 			letter-spacing: 3px;
 			font-weight: bold;
+		}
+
+		.instagram-comments{
+			.instagram-comment{
+				position: relative;
+
+				.avatar{
+					width: 25px;
+					top: 10px;
+					left: 25px;	
+				}
+
+				.info{
+					padding:10px 10px 5px 70px;
+					border-bottom: none;
+				}
+
+				.caption{
+					font-size: 13px;
+				}
+			}
+
+			.view-more-comments{
+				text-decoration: none;
+				font-weight: normal;
+			}
 		}
 	}
 
