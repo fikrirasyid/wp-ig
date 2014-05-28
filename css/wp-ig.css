@@ -46,6 +46,7 @@
 }
 .wp-ig.instagram-items .instagram-item .meta .caption {
   display: block;
+  overflow: hidden;
 }
 .wp-ig.instagram-items .instagram-item .meta .caption a {
   font-weight: bold;
