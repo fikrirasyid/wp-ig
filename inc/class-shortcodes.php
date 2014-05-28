@@ -5,7 +5,7 @@ class WP_IG_Shortcodes{
 	function __construct(){
 		$this->prefix = 'wp_ig_';
 
-		add_shortcode( 'instagram_user_feed', array( $this, 'user_feed' ) );
+		add_shortcode( 'instagram_user_media', array( $this, 'user_media' ) );
 	}
 
 	/**
@@ -25,7 +25,7 @@ class WP_IG_Shortcodes{
 	/**
 	 * Display instagram feed based on username
 	 */
-	function user_feed( $atts ){
+	function user_media( $atts ){
 		$args = shortcode_atts( array(
 			'username' 		=> 'fikrirasyid',
 			'user_id' 		=> false,
