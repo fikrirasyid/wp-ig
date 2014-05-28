@@ -144,7 +144,7 @@ class WP_IG_Templates{
 	 */
 	function the_likes( $likes ){
 		if( isset( $likes->data ) && !empty( $likes->data ) ){
-			
+
 			echo '<div class="instagram-likes">';
 
 			$like_index = 0;
@@ -206,17 +206,21 @@ class WP_IG_Templates{
 				<?php
 			}
 
+				// Contextual more link
+				$the_rest = intval( $comments->count ) - count( $comments->data );
+				if( $the_rest > 0 ): 
 			?>
 
-			<div class="instagram-comment">
-				<div class="info">
-					<div class="caption">
-						<a href="<?php echo $link; ?>" class="view-more-comments" target="_blank"><?php printf( ngettext( "View One More Comment", "View %d More Comments", $comments->count ), $comments->count ); ?></a>
+				<div class="instagram-comment">
+					<div class="info">
+						<div class="caption">
+							<a href="<?php echo $link; ?>" class="view-more-comments" target="_blank"><?php printf( ngettext( "View One More Comment", "View %d More Comments", $the_rest ), $the_rest ); ?></a>
+						</div>
 					</div>
 				</div>
-			</div>
 
 			<?php			
+				endif;
 
 			echo "</div>";
 
