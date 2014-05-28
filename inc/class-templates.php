@@ -44,6 +44,9 @@ class WP_IG_Templates{
 	 * @return void
 	 */
 	function the_items( $data, $context = 'index' ){
+
+		echo "<div class='wp-ig instagram-items'>";
+
 		if( isset( $data->data ) && !empty( $data->data ) ){
 
 			// Print items
@@ -73,6 +76,8 @@ class WP_IG_Templates{
 		} else {
 			_e( "Cannot connect to Instagram", "wp_ig" );
 		}		
+
+		echo "</div><!-- .wp-ig.instagram-items -->";
 	}
 
 	/**
