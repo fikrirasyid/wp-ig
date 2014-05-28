@@ -40,7 +40,7 @@ class WP_IG_Shortcodes{
 
 		if( !$user_id ){
 			// If user_id isn't defined, request for user id data first
-			$user = $this->api()->get_user_search( array(
+			$user = $this->api()->user_search( array(
 				'q' => $username
 			) );
 
@@ -64,7 +64,7 @@ class WP_IG_Shortcodes{
 			echo "</h2>";
 		}
 
-		$this->templates()->display( 'get_user_media', $args );
+		$this->templates()->display( 'user_media', $args );
 
 		return ob_get_clean();
 	}
