@@ -107,7 +107,7 @@ class WP_IG_Templates{
 		?>
 			<div id="current-instagram-profile">
 				<div class="avatar">
-					<img src="<?php echo $user->profile_picture; ?>" alt="">
+					<img src="<?php echo $user->profile_picture; ?>" alt="<?php echo $user->full_name; ?>">
 				</div>
 				<div class="data">
 					<h3 class="full-name"><?php echo $user->full_name; ?></h3>
@@ -196,7 +196,7 @@ class WP_IG_Templates{
 				<div class="info">
 
 					<p class="username">
-						<a href="" title="<?php echo $item->user->full_name; ?>"><?php echo $item->user->username; ?></a>
+						<a href="<?php echo $this->base_url . "&username=" . $item->user->username;?>" title="<?php echo $item->user->full_name; ?>"><?php echo $item->user->username; ?></a>
 					</p>
 					 
 					<p class="meta-time">
@@ -283,7 +283,7 @@ class WP_IG_Templates{
 					</span>
 					<div class="info">
 						<div class="caption">
-							<a href="" class="username"><?php echo $comment->from->username; ?></a> <?php echo $this->parse_caption( $comment->text ); ?>
+							<a href="<?php echo $this->base_url . "&username=" . $comment->from->username; ?>" class="username"><?php echo $comment->from->username; ?></a> <?php echo $this->parse_caption( $comment->text ); ?>
 						</div>
 					</div>
 				</div>
