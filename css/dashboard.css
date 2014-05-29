@@ -41,17 +41,6 @@
   text-decoration: underline;
 }
 
-#feed-title {
-  width: 398px;
-  background: white;
-  margin: 0 auto;
-  padding: 15px 30px;
-  border: 1px solid #dfdfdf;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
-}
-
 .wp-ig.instagram-items-title {
   text-align: center;
   margin-bottom: 20px;
@@ -182,4 +171,15 @@
 }
 .wp-ig.instagram-items .more-instagram-items:active {
   background: #f0f0f0;
+}
+
+.wp-admin .wp-ig.instagram-items-title {
+  width: 398px;
+  background: white;
+  margin: 0 auto;
+  padding: 15px 30px;
+  border: 1px solid #dfdfdf;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
 }
