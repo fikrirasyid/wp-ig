@@ -1,9 +1,11 @@
 <?php
 class WP_IG_Shortcodes{
 	var $prefix;
+	var $account;
 
 	function __construct(){
 		$this->prefix = 'wp_ig_';
+		$this->account = get_option( "{$this->prefix}account" );
 
 		add_shortcode( 'instagram_user_media', array( $this, 'user_media' ) );
 	}
@@ -26,8 +28,9 @@ class WP_IG_Shortcodes{
 	 * Display instagram feed based on username
 	 */
 	function user_media( $atts ){
+
 		$args = shortcode_atts( array(
-			'username' 		=> 'fikrirasyid',
+			'username' 		=> $this->account->username,
 			'user_id' 		=> false,
 			'count' 		=> false,
 			'max_timestamp' => false,
@@ -50,6 +53,8 @@ class WP_IG_Shortcodes{
 			} else {
 				$args['user_id'] = $user->data[0]->id;
 			}
+		} else {
+			$username = false;
 		}
 
 		// unset the $username from $args
@@ -62,6 +67,8 @@ class WP_IG_Shortcodes{
 			echo "<h2 class='wp-ig instagram-items-title'>";
 			printf( __( "%s's Instagram Feed", "wp_ig" ), $username ); 			
 			echo "</h2>";
+		} else{
+			echo "<div class='clear' style='margin-top: 40px;'></div>";
 		}
 
 		$this->templates()->display( 'user_media', $args );
