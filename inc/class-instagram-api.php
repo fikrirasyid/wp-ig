@@ -5,10 +5,12 @@
 class WP_IG_API{
 	var $access_token;
 	var $endpoint;
+	var $prefix;
 
 	function __construct( $access_token = 'ACCESS_TOKEN' ){
 		$this->access_token = $access_token;
 		$this->endpoint = "https://api.instagram.com/v1/";
+		$this->prefix = "wp_ig_";
 	}
 
 	// GLOBAL --------------------------------
@@ -92,7 +94,8 @@ class WP_IG_API{
 
 		// Setup default values
 		$defaults = array(
-			'user_id' 		=> 0,
+			'username'		=> false,
+			'user_id' 		=> false,
 			'count' 		=> false,
 			'max_timestamp' => false,
 			'min_timestamp' => false,
@@ -102,6 +105,29 @@ class WP_IG_API{
 
 		// parse arguments
 		$args = wp_parse_args( $args, $defaults );
+
+		// If the method is used in user level, there's a chance that s/he'll use username instead of user id. This will handle it gently
+		if( !$args['user_id'] && $args['username'] ){
+			$user = $this->user_search( array(
+				'q' => $args['username']
+			) );
+
+			// If we cannot fetch user id, stop the process
+			if( !isset( $user->data[0]->id ) ){
+				return __( "{$args['username']} information cannot be fetched", "wp_ig" );
+			} else {
+				$args['user_id'] = $user->data[0]->id;
+				unset( $args['username'] );
+			}			
+		}
+
+		// If no user_id nor username given, use signed in user's ID
+		if( !$args['user_id'] && !$args['username'] ){
+
+			$account 			= get_option( "{$this->prefix}account" );
+			
+			$args['user_id'] 	= $account->id;
+		}
 
 		// Define endpoint
 		$endpoint = "https://api.instagram.com/v1/users/{$args['user_id']}/media/recent/?access_token={$this->access_token}";
