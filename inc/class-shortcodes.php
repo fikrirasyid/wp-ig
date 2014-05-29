@@ -63,15 +63,7 @@ class WP_IG_Shortcodes{
 		// Request for the feed, return as string
 		ob_start();
 
-		if( $username ){
-			echo "<h2 class='wp-ig instagram-items-title'>";
-			printf( __( "%s's Instagram Feed", "wp_ig" ), $username ); 			
-			echo "</h2>";
-		} else{
-			echo "<div class='clear' style='margin-top: 40px;'></div>";
-		}
-
-		$this->templates()->display( 'user_media', $args );
+		$this->templates()->display( 'user_media', $args, false, true );
 
 		return ob_get_clean();
 	}
