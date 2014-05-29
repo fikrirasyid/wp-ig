@@ -1,7 +1,10 @@
 <?php
 class WP_IG_Public{
+	var $current_page;
 
 	function __construct(){
+		$this->current_page = new WP_IG_Current_Page;
+
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_script_styles' ) );		
 
 		// Adding public page for instagram content
@@ -26,9 +29,20 @@ class WP_IG_Public{
 	function public_page(){
 		get_header();
 
-		$shortcode = new WP_IG_Shortcodes;
+		if( $this->current_page->query_string( 'tag_name' ) ){
+			// Hashtag page		
+			$method = "tag_media";
+		} else {
+			// Default (user page)
+			$method = "user_media";
+		}
 
-		echo $shortcode->user_media( $_REQUEST );
+		$args = $_REQUEST;
+		unset( $_REQUEST['page'] );
+		
+		$template = new WP_IG_Templates;
+
+		$template->display( $method, $args, false, array( 'title' => true ) );
 
 		get_footer();
 
