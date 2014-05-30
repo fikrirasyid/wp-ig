@@ -6,11 +6,27 @@ class WP_IG_API{
 	var $access_token;
 	var $endpoint;
 	var $prefix;
+	var $plugin_defaults;
 
 	function __construct( $access_token = 'ACCESS_TOKEN' ){
 		$this->access_token = $access_token;
-		$this->endpoint = "https://api.instagram.com/v1/";
-		$this->prefix = "wp_ig_";
+		$this->endpoint 	= "https://api.instagram.com/v1/";
+		$this->prefix 		= "wp_ig_";
+		$this->plugin_defaults 	= $this->plugin_defaults();
+	}
+
+	/**
+	 * Define arguments that will be merged to method's arguments
+	 * 
+	 * @return array of arguments
+	 */
+	function plugin_defaults(){
+		$plugin_defaults = array(
+			'cache'			=> 60, // cache the request for a minute. A minute is enough for the sake of real timeness
+			'ignore_cache'	=> false // ignore the cache and get the data from the API instead 
+		);
+
+		return $plugin_defaults;
 	}
 
 	// GLOBAL --------------------------------
@@ -22,19 +38,39 @@ class WP_IG_API{
 	 * 
 	 * @return array
 	 */
-	function get( $param ){
-		$result = wp_remote_get( $param, array(
-			'timeout' => 60
-		) );
+	function get( $endpoint, $args = array() ){
 
-		if( is_wp_error( $result ) ){
-			return false;
-		}
+		// Parse the arguments, mainly for caching timeframe and order to ignore the cache
+		$args = wp_parse_args( $args, $this->plugin_defaults );
 
-		if( isset( $result['body' ] ) ){
-			return json_decode( $result['body'] );
+		extract( $args );
+
+		// Get the transient key
+		$transient_key = $this->prefix . md5( $endpoint );
+
+		$transient = get_transient( $transient_key );
+
+		// If transient exists and user expecting to use the cache
+		if( $transient && !$ignore_cache ){
+			return json_decode( $transient['body'] );
 		} else {
-			return false;
+			// Get the data from Instagram endpoint
+			$result = wp_remote_get( $endpoint, array(
+				'timeout' => 60
+			) );
+
+			if( is_wp_error( $result ) ){
+				return false;
+			}
+
+			if( isset( $result['body' ] ) ){
+				// If the data is successfully parsed, save the result as transient
+				set_transient( $transient_key, $result, $cache );
+
+				return json_decode( $result['body'] );
+			} else {
+				return false;
+			}
 		}
 	}
 
@@ -103,6 +139,9 @@ class WP_IG_API{
 			'max_id'		=> false
 		);
 
+		// Merge the defaults
+		$defaults = array_merge( $defaults, $this->plugin_defaults );
+
 		// parse arguments
 		$args = wp_parse_args( $args, $defaults );
 
@@ -134,12 +173,12 @@ class WP_IG_API{
 
 		// Pushes more parameters
 		foreach ($args as $key => $param) {
-			if( $param ){
+			if( $param && !array_key_exists( $key, $this->plugin_defaults ) ){
 				$endpoint .= "&{$key}={$param}";
 			}
 		}
 
-		return $this->get( $endpoint );
+		return $this->get( $endpoint, $args );
 	}
 
 	/**

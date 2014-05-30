@@ -34,7 +34,9 @@ class WP_IG_Shortcodes{
 			'max_timestamp' => false,
 			'min_timestamp' => false,
 			'min_id'		=> false,
-			'max_id'		=> false			
+			'max_id'		=> false,
+			'cache'			=> 60, // cache the request for a minute
+			'ignore_cache'	=> false // ignore the cache and get the data from the API instead 
 		), $atts );
 
 		extract( $args );
