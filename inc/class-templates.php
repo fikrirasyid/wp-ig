@@ -7,6 +7,7 @@ class WP_IG_Templates{
 	var $account;
 	var $access_token;
 	var $base_url;
+	var $wpspin_url;
 
 	/**
 	 * Initialize
@@ -16,6 +17,7 @@ class WP_IG_Templates{
 		$this->account 		= get_option( "{$this->prefix}account" );
 		$this->access_token = get_option( "{$this->prefix}access_token" );
 		$this->api 			= new WP_IG_API( $this->access_token );
+		$this->wpspin_url 	= home_url( '/wp-includes/images/wpspin-2x.gif' );
 
 		// Define base_url based on admin or public page
 		if( is_admin() && ( !isset( $_REQUEST['action'] ) ) ){
@@ -156,7 +158,7 @@ class WP_IG_Templates{
 					$more_link .= "&" . http_build_query( $more_link_string );
 				}
 
-				printf( __( "<a href='%s' class='more-instagram-items'>Load More</a>", "wp_ig" ), $more_link );				
+				printf( __( "<a href='%s' class='more-instagram-items'><img src='{$this->wpspin_url}' width='16' height='16' class='loading'> <span class='label'>Load More</span></a>", "wp_ig" ), $more_link );				
 			}
 		} else {
 			_e( "Cannot connect to Instagram", "wp_ig" );

@@ -123,6 +123,23 @@
   font-weight: bold;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
+.wp-ig.instagram-items .more-instagram-items .loading,
+.wp-ig.instagram-items .more-instagram-items .label {
+  vertical-align: middle;
+}
+.wp-ig.instagram-items .more-instagram-items .loading {
+  margin-right: 5px;
+  display: none;
+}
+.wp-ig.instagram-items .more-instagram-items.loading {
+  width: 120px;
+}
+.wp-ig.instagram-items .more-instagram-items.loading .loading {
+  display: inline-block;
+}
+.wp-ig.instagram-items .more-instagram-items .label {
+  line-height: .6;
+}
 .wp-ig.instagram-items .more-instagram-items:hover {
   background: #f1f1f1;
 }
