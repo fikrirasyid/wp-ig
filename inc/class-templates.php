@@ -48,6 +48,9 @@ class WP_IG_Templates{
 
 		extract( $options );
 
+		// Wrap Start
+		echo "<div class='wp-ig-wrap-inside'>";
+
 		// Display additional information conditionally based on method and options
 		switch ( $method ) {
 			case 'tag_media':
@@ -98,6 +101,9 @@ class WP_IG_Templates{
 		
 		// Print output
 		$this->the_items( $output, $context );
+
+		// Wrap End
+		echo "</div>";
 	}
 
 	/**
