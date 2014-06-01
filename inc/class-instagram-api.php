@@ -92,10 +92,24 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function user_by_id( $user_id ){
-		$endpoint = "{$this->endpoint}users/$user_id/?access_token=$this->access_token";
+	function user_by_id( $args ){
 
-		return $this->get( $endpoint );
+		// Setup default values
+		$defaults = array(
+			'user_id' => false
+		);
+
+		// parse arguments
+		$args = wp_parse_args( $args, $defaults );
+
+		// User ID cannot be empty
+		if( !$args['user_id'] ){
+			return new WP_Error( 400, __( "User ID cannot be empty", "wp_ig" ) );
+		}
+
+		$endpoint = "{$this->endpoint}users/{$args['user_id']}/?access_token=$this->access_token";
+
+		return $this->get( $endpoint, $args );
 	}
 
 	/**
@@ -111,7 +125,7 @@ class WP_IG_API{
 			'min_id'		=> false,
 			'max_id'		=> false		
 		);
-		
+
 		// parse arguments
 		$args = wp_parse_args( $args, $defaults );
 
