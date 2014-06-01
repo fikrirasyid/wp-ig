@@ -19,6 +19,7 @@ class WP_IG_Public{
 	 */	
 	function enqueue_script_styles(){
 		wp_enqueue_style( 'wp_ig', WP_IG_URL . 'css/wp-ig.css' );
+		wp_enqueue_script( 'wp_ig', WP_IG_URL . 'js/wp-ig.js', array( 'jquery' ), '1.0' );
 	}
 
 	/**
