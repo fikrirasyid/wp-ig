@@ -210,7 +210,7 @@ class WP_IG_Templates{
 				<div class="info">
 
 					<p class="username">
-						<a href="<?php echo $this->base_url . "&username=" . $item->user->username;?>" title="<?php echo $item->user->full_name; ?>"><?php echo $item->user->username; ?></a>
+						<a href="<?php echo $this->base_url . "&username=" . $item->user->username;?>" title="<?php echo $item->user->full_name; ?>" class="onpage"><?php echo $item->user->username; ?></a>
 					</p>
 					 
 					<p class="meta-time">
@@ -297,7 +297,7 @@ class WP_IG_Templates{
 					</span>
 					<div class="info">
 						<div class="caption">
-							<a href="<?php echo $this->base_url . "&username=" . $comment->from->username; ?>" class="username"><?php echo $comment->from->username; ?></a> <?php echo $this->parse_caption( $comment->text ); ?>
+							<a href="<?php echo $this->base_url . "&username=" . $comment->from->username; ?>" class="username onpage"><?php echo $comment->from->username; ?></a> <?php echo $this->parse_caption( $comment->text ); ?>
 						</div>
 					</div>
 				</div>
@@ -336,10 +336,10 @@ class WP_IG_Templates{
 	function parse_caption( $text ){
 		if( isset( $text ) && $text != '' ){
 			// Parse username
-			$text = preg_replace('/@(\w+)/', "<a href='{$this->base_url}&username=$1'>@$1</a>", $text);
+			$text = preg_replace('/@(\w+)/', "<a href='{$this->base_url}&username=$1' class='onpage'>@$1</a>", $text);
 
 			// Parse hashtags
-			$text = preg_replace('/#(\w+)/', "<a href='{$this->base_url}&tag_name=$1'>#$1</a>", $text);
+			$text = preg_replace('/#(\w+)/', "<a href='{$this->base_url}&tag_name=$1' class='onpage'>#$1</a>", $text);
 		}
 
 		return $text;

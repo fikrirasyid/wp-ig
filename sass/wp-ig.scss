@@ -186,6 +186,24 @@
 	}
 }
 
+// Loading state
+.wp-ig-wrap.loading{
+	position: relative;
+
+	&:after{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		content: "Loading...";
+		background: white;
+		opacity: .9;
+		text-align: center;
+		padding: 20px;
+	}
+}
+
 /**
  * Support for small screen(s)
  */
