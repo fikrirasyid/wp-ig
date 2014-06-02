@@ -123,14 +123,19 @@ class WP_IG_API{
 		$defaults = array(
 			'count' 		=> false,	
 			'min_id'		=> false,
-			'max_id'		=> false		
+			'max_id'		=> false,
+			'liked'			=> false		
 		);
 
 		// parse arguments
 		$args = wp_parse_args( $args, $defaults );
 
-		// Define endpoint
-		$endpoint = "{$this->endpoint}users/self/feed?access_token=$this->access_token";
+		// Define endpoint. If liked is set to true, display self's liked instead of self feed
+		if( $args['liked'] ){
+			$endpoint = "{$this->endpoint}users/self/media/liked?access_token=$this->access_token";			
+		} else {
+			$endpoint = "{$this->endpoint}users/self/feed?access_token=$this->access_token";			
+		}
 
 		return $this->get( $endpoint, $args );
 	}
