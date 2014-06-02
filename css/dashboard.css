@@ -212,3 +212,19 @@
   font-weight: bold;
   text-align: center;
 }
+
+@media all and (max-width: 420px) {
+  #current-instagram-profile {
+    width: 95%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .wp-admin .wp-ig.instagram-items-title {
+    width: 95%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
