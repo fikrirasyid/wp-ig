@@ -68,7 +68,7 @@ function wp_ig( $args = array() ){
 	// Print the wrapper. Javascript will fetch the data from here
 	echo "<div class='wp-ig-wrap' data-source='{$wp_ig_source_url}'>";
 
-	echo "<p class='wp-ig-wrap-loading'><img src='{$wpspin_url}' width='16' height='16' class='loading' /><br /> ". __( 'Loading Instagram Contents...', 'wp_ig' ) ."</p>";
+	echo "<p class='wp-ig-wrap-loading'><img src='{$wpspin_url}' width='16' height='16' class='loading' /><br /> ". __( 'Loading Instagram Contents...', 'wp-ig' ) ."</p>";
 
 	echo "</div>";		
 }
