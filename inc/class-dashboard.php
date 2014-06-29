@@ -48,7 +48,8 @@ class WP_IG_Dashboard{
 
 		// If the client ID and client secret has been saved, display edit update settings
 		if( $this->client_id && $this->client_secret && $this->client_id != '' && $this->client_secret != '' ){
-			add_submenu_page( 'wp_ig', __( 'Setup', 'wp_ig' ), __( 'Setup', 'wp_ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );
+			add_submenu_page( 'wp_ig', __( 'Import', 'wp-ig' ), __( 'Import', 'wp-ig' ), 'edit_others_posts', 'wp_ig_import', array( $this, 'page_import') );
+			add_submenu_page( 'wp_ig', __( 'Setup', 'wp-ig' ), __( 'Setup', 'wp-ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );
 		}
 	}
 
@@ -120,6 +121,15 @@ class WP_IG_Dashboard{
 				}
 			?>
 		<?php
+	}
+
+	/**
+	 * Print import page
+	 * 
+	 * @return void
+	 */
+	function page_import(){
+		include_once( WP_IG_DIR . '/pages/import.php' );
 	}
 
 	/**
