@@ -18,6 +18,7 @@ if (!defined('WP_IG_URL'))
 
 
 // Requiring files
+require_once( 'inc/class-settings.php' );
 require_once( 'inc/class-instagram-api.php' );
 require_once( 'inc/class-current-page.php' );
 require_once( 'inc/class-templates.php' );
