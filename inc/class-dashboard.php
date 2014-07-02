@@ -71,6 +71,16 @@ class WP_IG_Dashboard{
 	}
 
 	/**
+	/**
+	 * Initiating content class as method
+	 * 
+	 * @return obj WP_IG_Content
+	 */
+	function content(){
+		return new WP_IG_Content;
+	}
+
+	/**
 	 * Saving form submission
 	 * 
 	 * @return void
