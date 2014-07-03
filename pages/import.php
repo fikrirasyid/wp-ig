@@ -11,118 +11,96 @@
 ?>
 <div class="wrap">
 	<h2><?php _e( 'Import', 'wp-ig' ); ?></h2>	
-	<?php 
-		if( isset( $_GET['action'] ) && $_GET['action'] == 'import' ): 			
 
-			$user_media_param = array();
+	<?php 
+		if( isset( $_GET['action'] ) && $_GET['action'] == 'import' ){	
+
+			// Import parameter
+			$import_params = array(
+				'count' => 10,
+			);
 
 			// Append max id if there's any
 			if( $this->current_page->query_string( 'max_id' ) ){
-				$user_media_param['max_id'] = $this->current_page->query_string( 'max_id' );
+				$import_params['max_id'] = $this->current_page->query_string( 'max_id' );
 			}
 
-			$user_media = $this->api()->user_media( $user_media_param );
+			$import = $this->import()->import_items( $import_params );
 
-			if( isset( $user_media->data ) && ! empty( $user_media->data ) ){
+			if( isset( $import['importing'] ) && !empty( $import['importing'] ) ){
 
-				echo '<table class="wp-list-table widefat fixed media">';
+				echo '<ul>';
 
-				// Importing instagram items..
-				$index = 0;
-				foreach ($user_media->data as $item ) {
+				foreach ( $import['importing'] as $key => $item ) {
 
-					// Verify user based on user_id sameness
-					if( ! isset( $item->user->id ) || intval( $item->user->id ) != intval( $account->id ) )
-						continue;
+					echo '<li>';
 
-					// Prevent duplication
-					$existing = get_posts( array(
-						'meta_key' => '_instagram_id',
-						'meta_value' => $item->id
-					) );
+					switch ( $item['status'] ) {
+						case 'error':
 
-					// Increase the index
-					$index++;
+							echo '<span style="font-weight: bold; color: red">' . __( "Error", "wp-ig" ) . '</span>: ';
 
-					// Determine odd class
-					if( 0 == ( $index % 2 ) ){
-						$tr_class = 'class="alternate"';
-					} else {
-						$tr_class = '';
-					}
-
-					echo "<tr $tr_class>";
-
-					echo '<td width="150">';
-
-						echo "<img src='{$item->images->thumbnail->url}'>";
-
-					echo '</td>';
-
-					echo '<td>';
-
-						echo "<h4 style='margin-bottom: 0;'>@{$item->user->username}</h4>";
-						echo "<p>{$item->caption->text}</p>";
-
-
-					if( !empty( $existing[0]->ID ) ){
-
-						// Display status if determined id has been exist
-						echo '<p style="font-weight: bold; color: red;">'. sprintf( __( 'Import cancelled. This item has been posted before: <a href="%s" target="_blank">%s</a>', 'wp-ig' ), get_permalink( $existing[0]->ID ), esc_html( $existing[0]->post_title ) ) .'</p>';
-
-					} else {
-						// Import Instagram media
-						$post_id = $this->import()->import_item( $item );
-
-						if( $post_id ){
+							_e( 'Cannot import Instagram media', 'wp-ig' );
 							
-							$post = get_post( $post_id );
+							break;
+						
+						case 'duplicate':
 
-							$post_title = $post->post_title;
+							echo '<span style="font-weight: bold; color: orange">' . __( "Duplicate", "wp-ig" ) . '</span>: ';
 
-							if( strlen( $post->post_title ) ){
-								$post_title = substr( $post->post_title, 0, 30 ) . '...';
-							}
+							$permalink = get_permalink( $item['data']->ID );
 
-							echo '<p style="font-weight: bold; color: green;">'. sprintf( __( 'Imported: <a href="%s" target="_blank">%s</a>', 'wp-ig' ), get_permalink( $post_id ), $post_title ) .'</p>';
-						} else {
-							echo '<p style="font-weight: bold; color: red;">'. __( 'Import failed', 'wp-ig' ) .'</p>';
-						}
+							printf( __( 'Instagram media you want to import has been exist: %s', 'wp-ig' ), "<a href='$permalink' target='_blank'>{$item['data']->post_title}</a>" );
+							
+							break;
 
+						default:
+							
+							echo '<span style="font-weight: bold; color: green">' . __( "Success", "wp-ig" ) . '</span>: ';
+
+							$permalink = get_permalink( $item['data']->ID );
+
+							printf( __( 'Instagram media imported: %s', 'wp-ig' ), "<a href='$permalink' target='_blank'>{$item['data']->post_title}</a>" );
+							
+							break;
 					}
 
-					echo '</td>';
+					echo '</li>';
 
-					echo '</tr>';
 				}
 
-				echo '</table>';
+				echo '</ul>';
 
-				// Getting next set of posts
-				if( isset( $user_media->pagination->next_max_id ) ){
-					// Load and import the next page
+				// If next set of media detected, continue to import
+				if( isset( $import['pagination']->next_max_id ) && $import['pagination']->next_max_id != '' ){
+
+					$next_import_url =  admin_url() . "admin.php?page=wp_ig_import&action=import&max_id=" . $import['pagination']->next_max_id;
 					?>
 						<script type="text/javascript">
-							// window.location = "<?php echo admin_url(); ?>admin.php?page=wp_ig_import&action=import&max_id=<?php echo $user_media->pagination->next_max_id; ?>";
+							window.location = "<?php echo $next_import_url; ?>";
 						</script>
-					<?php
-				} else {
-
-					$done_message = __( 'All your Instagram media has been imported!', 'wp-ig' );
-
-					echo "<h2>{$done_message}</h2>";
+							<p><?php _e( 'If your browser is not automatically moved to the next page, click here:', 'wp-ig' ); ?> <a href="<?php echo $next_import_url; ?>"><?php _e( 'Next Page', 'wp-ig' ); ?></a></p>
+					<?php					
 				}
-			} else {
-				// We're done here
-				echo '<p style="color: red;">';
 
-				_e( 'Cannot get content from Instagram. Please try again later', 'wp-ig' );
-
-				echo '</p>';
 			}
 
-		else: 
-			$this->import()->pre_import_message( $account );
-		endif; 
+			// Display all has been imported
+			if( intval( $import['count'] ) < 10 ){
+				
+				echo '<p>';
+
+				printf( __( 'All Instagram media has been imported! <a href="%s" target="_blank">View it here</a>.', 'wp-ig' ), $this->import()->get_archive_url() );
+
+				echo '</p>';
+
+			}
+
+		} else{
+
+			$this->import()->pre_import_message();
+
+		} 
 	?>
+
 </div>
