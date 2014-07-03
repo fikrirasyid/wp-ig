@@ -69,6 +69,32 @@
 						<p class="description"><?php _e( 'Instagram media will be imported/synced will be assigned to selected category', 'wp-ig' ); ?></p>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row">
+						<label for="sync"><?php _e( 'Sync Instagram', 'wp-id' ); ?></label>
+					</th>
+					<td>
+						<fieldset>
+							<?php 
+								$this->settings()->radio( array(
+									'id' 		=> 'sync',
+									'options' 	=> array(
+										array(
+											'value' => 'yes',
+											'label' => __( 'Yes', 'wp-ig' )
+										),
+										array(
+											'value' => 'no',
+											'label'	=> __( 'No', 'wp-ig' )
+										)
+									),
+									'default' 	=> get_option( 'wp_ig_sync', 'no' )
+								) );
+							?>							
+						</fieldset>
+						<p class="description"><?php _e( 'Yould you like to automatically post your future Instagram media to this site?', 'wp-ig' ); ?></p>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 
