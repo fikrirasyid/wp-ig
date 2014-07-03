@@ -28,7 +28,7 @@ class WP_IG_Settings{
 	 * @return array
 	 */
 	function get_categories(){
-		$categories_data = get_categories();
+		$categories_data = get_categories( array( 'hide_empty' => false ) );
 
 		$categories = array();
 
