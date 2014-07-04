@@ -87,6 +87,10 @@ class WP_IG_Settings{
 
 	/**
 	 * Display radio button option
+	 * 
+	 * @param array of arguments
+	 * 
+	 * @return void
 	 */
 	function radio( $args ){
 
@@ -133,5 +137,33 @@ class WP_IG_Settings{
 				<br>
 			<?php
 		}
+	}
+
+	/**
+	 * Display checkbox input
+	 * 
+	 * @param array of arguments
+	 * 
+	 * @return void
+	 */
+	function checkbox( $args ){
+
+		$default = array(
+			'id' 		=> '_checkbox_name',
+			'value'		=> 'yes',
+			'default' 	=> 'yes',
+			'label'		=> __( 'label of checkbox here', 'wp-ig' ),
+		);
+
+		$args = wp_parse_args( $args, $default );
+
+		extract( $args );
+
+		?>
+			<label for="<?php echo $id; ?>">
+				<input type="checkbox" name="<?php echo $this->prefix . $id; ?>" id="<?php echo $id; ?>" value="<?php echo $value; ?>" <?php if( $default == $value ) echo 'checked="checked"'; ?>>
+				<?php echo $label; ?>
+			</label>
+		<?php
 	}
 }
