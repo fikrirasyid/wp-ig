@@ -1,4 +1,6 @@
 <?php
+	if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 	$account = get_option( "{$this->prefix}account" );
 
 	// If there's no account information, display error

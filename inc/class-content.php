@@ -1,4 +1,7 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * All things related to wp-ig generated post
  */

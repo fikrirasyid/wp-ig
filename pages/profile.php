@@ -1,3 +1,7 @@
+<?php
+	if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
+
 <div class="wrap">
 	<?php
 		$access_token = get_option( "{$this->prefix}access_token" );

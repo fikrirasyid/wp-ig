@@ -1,4 +1,7 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class WP_IG_Current_Page{
 	/**
 	 * Get query string value. Return as false if no query string is stated

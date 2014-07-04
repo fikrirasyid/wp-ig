@@ -1,4 +1,7 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class WP_IG_Shortcodes{
 	var $prefix;
 	var $wp_ig_source_url;
