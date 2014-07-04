@@ -53,11 +53,32 @@ class WP_IG_Sync{
 	}
 
 	/**
+	 * Get sync preference from saved option
+	 * 
+	 * @return bool
+	 */
+	function do_sync(){
+		$preference = get_option( 'wp_ig_sync', 'no' );
+
+		if( 'yes' == $preference ){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Sync the account's media to this site
 	 * 
 	 * @return void
 	 */
 	function sync( $media_params = array() ){
+
+		// Don't sync if user prefer not to sync
+		if( $this->do_sync() == false ){
+			return;			
+		}
+
 		// Load wp-load to prevent fatal error
 		require_once( ABSPATH . "wp-admin/includes/file.php" );
 		require_once( ABSPATH . "wp-admin/includes/media.php" );
