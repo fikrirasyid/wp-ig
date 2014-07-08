@@ -92,9 +92,21 @@ class WP_IG_Templates{
 				// Display user title
 				if( $title && isset( $output->data{0}->user->username ) ){
 					echo "<h2 class='wp-ig instagram-items-title'>";
-					printf( __( "%s's Instagram Feed", "wp_ig" ), $output->data{0}->user->username  ); 			
+					printf( __( "%s's Instagram", "wp_ig" ), $output->data{0}->user->username  ); 			
 					echo "</h2>";
 				}				
+				break;
+
+			case 'self_feed':
+
+				if( $profile ){
+					$this->the_user_profile( $this->account );
+
+					echo "<h2 class='wp-ig instagram-items-title'>";
+					_e( 'Your Instagram Feed', 'wp-ig' );
+					echo "</h2>";
+				}
+
 				break;
 			
 			default:
