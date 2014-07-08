@@ -14,6 +14,7 @@ class WP_IG_Dashboard{
 	var $exchange_code;
 	var $current_page;
 	var $templates;
+	protected $account;
 
 	function __construct(){
 		$this->prefix 				= 'wp_ig_';
@@ -25,6 +26,7 @@ class WP_IG_Dashboard{
 		$this->exchange_code 		= get_option( "{$this->prefix}exchange_code" );
 		$this->current_page 		= new WP_IG_Current_Page;
 		$this->templates 			= new WP_IG_Templates;
+		$this->account 				= get_option( "{$this->prefix}account" );
 
 		// If user is currently on wp_ig pages
 		if( isset( $_GET['page'] ) && substr( $_GET['page'], 0, 5 ) == "wp_ig" ){
@@ -53,7 +55,13 @@ class WP_IG_Dashboard{
 		add_menu_page( __( 'Instagram', 'wp-ig' ), __( 'Instagram', 'wp-ig' ), 'edit_others_posts', 'wp_ig', array( $this, 'page_main' ), 'dashicons-camera', 7 );
 
 		// If the client ID and client secret has been saved, display edit update settings
-		if( $this->client_id && $this->client_secret && $this->client_id != '' && $this->client_secret != '' ){
+		if( $this->client_id && 
+			$this->client_secret && 
+			$this->account &&
+			$this->client_id != '' && 
+			$this->client_secret != '' &&
+			$this->account != ''
+		){
 			add_submenu_page( 'wp_ig', __( 'Import', 'wp-ig' ), __( 'Import', 'wp-ig' ), 'edit_others_posts', 'wp_ig_import', array( $this, 'page_import') );
 			add_submenu_page( 'wp_ig', __( 'Delete', 'wp-ig' ), __( 'Delete', 'wp-ig' ), 'edit_others_posts', 'wp_ig_delete', array( $this, 'page_delete') );
 			add_submenu_page( 'wp_ig', __( 'Setup', 'wp-ig' ), __( 'Setup', 'wp-ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );
