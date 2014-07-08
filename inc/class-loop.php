@@ -43,34 +43,32 @@ class WP_IG_Loop{
 
 		$formatted_content = '';
 
-		if( is_single() && get_option( 'wp_ig_prepend_on_single', 'yes' ) == 'yes' ){
-		 	$formatted_content .= $this->get_prepend_media( $post );
-		}
+		// Prepend on single vs the others
+		if( is_single() ){
 
-		if( !is_single() && get_option( 'wp_ig_prepend_on_index', 'yes' ) == 'yes' ){
-			$formatted_content .= $this->get_prepend_media( $post );
+			if( 'image' == get_post_format( $post->ID ) && get_option( 'wp_ig_prepend_photo_on_single', 'yes' ) == 'yes' ){
+			 	$formatted_content .= $this->get_prepend_image( $post );
+			}
+
+			if( 'video' == get_post_format( $post->ID ) && get_option( 'wp_ig_prepend_video_on_single', 'yes' ) == 'yes' ){
+			 	$formatted_content .= $this->get_prepend_video( $post );
+			}
+
+		} else {
+
+			if( 'image' == get_post_format( $post->ID ) && get_option( 'wp_ig_prepend_photo_on_index', 'yes' ) == 'yes' ){
+				$formatted_content .= $this->get_prepend_image( $post );
+			}
+
+			if( 'video' == get_post_format( $post->ID ) && get_option( 'wp_ig_prepend_video_on_index', 'yes' ) == 'yes' ){
+				$formatted_content .= $this->get_prepend_video( $post );
+			}
+
 		}
 
 		$formatted_content .= $content;
 
 		return $formatted_content;
-	}
-
-	/**
-	 * Get instagram media to be prepended
-	 * 
-	 * @param obj post
-	 * 
-	 * @param string media
-	 */
-	function get_prepend_media( $post ){
-		if( 'image' == get_post_format( $post->ID ) ){
-			return $this->get_prepend_image( $post );
-		}
-
-		if( 'video' == get_post_format( $post->ID ) ){
-			return $this->get_prepend_video( $post );
-		}		
 	}
 
 	/**

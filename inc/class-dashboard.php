@@ -152,18 +152,31 @@ class WP_IG_Dashboard{
 			$saving_post_category 	= update_option( "{$this->prefix}post_category", intval( $_POST['wp_ig_post_category'] ) );
 			$saving_sync 			= update_option( "{$this->prefix}sync", sanitize_text_field( $_POST['wp_ig_sync'] ) );
 			
-			// Saving prepend item prefence
-			if( isset( $_POST['wp_ig_prepend_on_index'] ) ){
-				$prepend_on_index 	= update_option( "{$this->prefix}prepend_on_index", 'yes' );
+			// Saving prepend item preference
+			if( isset( $_POST['wp_ig_prepend_photo_on_index'] ) ){
+				$prepend_photo_on_index 	= update_option( "{$this->prefix}prepend_photo_on_index", 'yes' );
 			} else {
-				$prepend_on_index 	= update_option( "{$this->prefix}prepend_on_index", 'no' );
+				$prepend_photo_on_index 	= update_option( "{$this->prefix}prepend_photo_on_index", 'no' );
 			}
 
-			if( isset( $_POST['wp_ig_prepend_on_single'] ) ){
-				$prepend_on_single 	= update_option( "{$this->prefix}prepend_on_single", 'yes' );
+			if( isset( $_POST['wp_ig_prepend_photo_on_single'] ) ){
+				$prepend_photo_on_single 	= update_option( "{$this->prefix}prepend_photo_on_single", 'yes' );
 			} else {
-				$prepend_on_single 	= update_option( "{$this->prefix}prepend_on_single", 'no' );
+				$prepend_photo_on_single 	= update_option( "{$this->prefix}prepend_photo_on_single", 'no' );
 			}
+
+			if( isset( $_POST['wp_ig_prepend_video_on_index'] ) ){
+				$prepend_video_on_index 	= update_option( "{$this->prefix}prepend_video_on_index", 'yes' );
+			} else {
+				$prepend_video_on_index 	= update_option( "{$this->prefix}prepend_video_on_index", 'no' );
+			}
+
+			if( isset( $_POST['wp_ig_prepend_video_on_single'] ) ){
+				$prepend_video_on_single 	= update_option( "{$this->prefix}prepend_video_on_single", 'yes' );
+			} else {
+				$prepend_video_on_single 	= update_option( "{$this->prefix}prepend_video_on_single", 'no' );
+			}
+
 
 			if( $saving_client_id ){
 				$this->client_id = sanitize_text_field( $_POST['client_id'] );

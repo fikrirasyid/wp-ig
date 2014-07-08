@@ -110,23 +110,47 @@
 			<tbody>
 				<tr>
 					<th scope="row">
-						<?php _e( 'Prepend Media', 'wp-ig' ); ?>
+						<?php _e( 'Prepend Photo', 'wp-ig' ); ?>
 					</th>
 					<td>
 						<fieldset>
 							<?php
 								$this->settings()->checkbox( array(
-									'id' 		=> 'prepend_on_index',
+									'id' 		=> 'prepend_photo_on_index',
 									'value'		=> 'yes',
-									'default' 	=> get_option( 'wp_ig_prepend_on_index', 'yes' ),
-									'label'		=> __( 'Display imported Instagram media on top of the content at homepage, category page, and search page', 'wp-ig' ),
+									'default' 	=> get_option( 'wp_ig_prepend_photo_on_index', 'yes' ),
+									'label'		=> __( 'Display imported Instagram photo on top of the content at homepage, category page, and search page', 'wp-ig' ),
 								) );
 
 								$this->settings()->checkbox( array(
-									'id' 		=> 'prepend_on_single',
+									'id' 		=> 'prepend_photo_on_single',
 									'value'		=> 'yes',
-									'default' 	=> get_option( 'wp_ig_prepend_on_single', 'yes' ),
-									'label'		=> __( 'Display imported Instagram media on top of the content at article page', 'wp-ig' ),
+									'default' 	=> get_option( 'wp_ig_prepend_photo_on_single', 'yes' ),
+									'label'		=> __( 'Display imported Instagram photo on top of the content at article page', 'wp-ig' ),
+								) );								
+							?>
+						</fieldset>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<?php _e( 'Prepend Video', 'wp-ig' ); ?>
+					</th>
+					<td>
+						<fieldset>
+							<?php
+								$this->settings()->checkbox( array(
+									'id' 		=> 'prepend_video_on_index',
+									'value'		=> 'yes',
+									'default' 	=> get_option( 'wp_ig_prepend_video_on_index', 'yes' ),
+									'label'		=> __( 'Display imported Instagram video on top of the content at homepage, category page, and search page', 'wp-ig' ),
+								) );
+
+								$this->settings()->checkbox( array(
+									'id' 		=> 'prepend_video_on_single',
+									'value'		=> 'yes',
+									'default' 	=> get_option( 'wp_ig_prepend_video_on_single', 'yes' ),
+									'label'		=> __( 'Display imported Instagram video on top of the content at article page', 'wp-ig' ),
 								) );								
 							?>
 						</fieldset>
