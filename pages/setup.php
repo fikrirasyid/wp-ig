@@ -159,6 +159,19 @@
 			</tbody>
 		</table>
 
+		<br>
+		<h3><?php _e( 'E. Deauthorize This Site From Your Instagram Account', 'wp-ig' ); ?></h3>
+		<p><?php printf( __( '<a href="%s" title="Deauthorize this site from your Instagram account" id="deauth-instagram">Click here to deauthorize this site from your Instagram Account</a>.', 'wp-ig' ), admin_url() . 'admin.php?page=wp_ig_setup' ); ?></p>
+		<p><?php printf( __( '<strong>Important</strong>: this action will only de-authorize this site from your Instagram account. If you want to delete the imported content as well, <a href="%s" title="delete your imported Instagram account" target="_blank">you can delete it here</a>.', 'wp-ig' ), admin_url() . 'admin.php?page=wp_ig_delete' ); ?></p>
+
+		<script type="text/javascript">
+			jQuery(document).ready(function($){
+				$('#deauth-instagram').click(function(e){
+					InstagramAuthWindow = window.open('<?php echo admin_url(); ?>admin-ajax.php?action=wp_ig_deauth_account&_wpnonce=<?php echo wp_create_nonce( "deauth_instagram_account" ); ?>', 'Instagram Authorization', 'width=800,height=400');	
+				});
+			});
+		</script>	
+
 		<?php wp_nonce_field( "wp_ig_setup", "_wpnonce" ); ?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'wp-ig' ); ?>">
