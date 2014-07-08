@@ -26,7 +26,7 @@
 			// Hashtag page		
 			$method = "tag_media";
 
-		} elseif ( $this->current_page->query_string( 'username' ) ) {
+		} elseif ( $this->current_page->query_string( 'username' ) || $this->current_page->query_string( 'user_id' ) ) {
 			$method = 'user_media';
 		} else {
 			// Default (user feed)
