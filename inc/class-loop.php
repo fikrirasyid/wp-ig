@@ -94,12 +94,23 @@ class WP_IG_Loop{
 	 * @param string prepended video
 	 */
 	function get_prepend_video( $post ){
-		$url = get_post_meta( $post->ID, '_format_video_embed', true );
+		$video = get_post_meta( $post->ID, '_format_video_embed', true );
 
-		if( $url ){
-			return '<p>' . do_shortcode( "[video src='{$url}']" ) . '</p>';
+		$video_extensions = array( 'mp4', 'ogg' );
+	
+		$video_info = pathinfo( $video );
+
+		// Check if this should be displayed using video tag
+		if( isset( $video_info['extension'] ) && in_array( $video_info['extension'], $video_extensions) ){
+
+			echo "<video controls><source src='$video'></source></video>";
+
+		} elseif( strpos( $video, '<iframe' ) !== false ){
+			// If this is embed code
+			echo $video;
 		} else {
-			return false;
+			// Otherwise, assume that this is oEmbed link and get the content using built-in oEmbed mechanism
+			echo wp_oembed_get( $video );
 		}
 	}
 }
