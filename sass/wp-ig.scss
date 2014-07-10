@@ -27,6 +27,38 @@
 		background: white;
 		box-shadow: 0 0 3px #999;
 		margin-bottom: 30px;
+		position: relative;
+
+		.actions{
+			position: absolute;
+			top: 0;
+			left: -150px;
+			// background: red;
+			width: 90px;
+			// height: 70px;
+			// border-radius: 50%;
+			padding: 5px 15px;
+			text-align: center;
+			font-weight: bold;
+			text-transform: uppercase;
+			text-align: right;
+
+			a{
+				text-decoration: none;
+
+				&.item-posted{
+					color: #bfbfbf;
+
+					&:hover{
+						color: #999;
+					}
+
+					&:active{
+						color: #afafaf;
+					}
+				}
+			}
+		}
 
 		.media{
 			width: 400px;

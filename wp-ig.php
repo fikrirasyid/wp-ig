@@ -76,6 +76,7 @@ class WP_IG{
 		require_once( 'inc/class-current-page.php' );
 		require_once( 'inc/class-templates.php' );
 		require_once( 'inc/class-dashboard.php' );
+		require_once( 'inc/class-endpoints.php' );
 		require_once( 'inc/class-shortcodes.php' );
 		require_once( 'inc/class-public.php' );
 		require_once( 'inc/class-loop.php' );

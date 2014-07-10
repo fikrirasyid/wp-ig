@@ -206,6 +206,9 @@ class WP_IG_Templates{
 		$current_time = current_time( 'timestamp' );
 		?>
 		<div class="instagram-item">
+			<div class="actions">
+				<?php $this->actions( $item ); ?>
+			</div>
 			<div class="media">	
 				<?php if( isset( $item->videos->standard_resolution ) ) : ?>
 					<video controls loop>
@@ -358,5 +361,67 @@ class WP_IG_Templates{
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Get item status on the site
+	 * 
+	 * @return void
+	 */
+	function get_status( $id ){
+		global $wpdb;
+
+		$query = $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_instagram_id' AND meta_value = %s", $id );
+
+		$post = $wpdb->get_row( $query );
+
+		if( $post ){
+			return array(
+				'post_id' => $post->post_id,
+				'permalink' => get_permalink( $post->post_id ),
+			);
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Display item action
+	 * 
+	 * @return void
+	 */
+	function actions( $item ){
+		if( !current_user_can( 'edit_others_posts' ) ){
+			return;
+		}
+
+		// If this has been posted on the site
+		$status = $this->get_status( $item->id );
+
+		$import_nonce = wp_create_nonce( "import_{$item->id}" );
+
+		$repost_nonce = wp_create_nonce( "report_{$item->id}" );
+
+		$import_url = admin_url() . "admin-ajax.php?action=wp_ig_import_item&id={$item->id}&_n={$import_nonce}";
+
+		$repost_url = admin_url() . "admin-ajax.php?action=wp_ig_repost_item&id={$item->id}&_n={$repost_nonce}";
+
+		if( $status ){
+			// if this is current user's to post
+			if( $this->account->id == $item->user->id ){
+				echo '<a href="'. $status["permalink"] .'" class="item-posted" target="_blank" title="'. __( 'View post', 'wp-ig' ) .'">'. __( 'Posted', 'wp-ig' ) .'<a>';
+			} else {
+				echo '<a href="'. $status["permalink"] .'" class="item-posted" target="_blank" title="'. __( 'View post', 'wp-ig' ) .'">'. __( 'Reposted', 'wp-ig' ) .'<a>';
+			}
+		} else {
+			// if this is current user's to post
+			if( $this->account->id == $item->user->id ){
+				// Cross post
+				echo '<a href="'. $import_url .'" class="item-not-posted import-item" title="'. __( 'Post this media', 'wp-ig' ) .'">'. __( 'Post This', 'wp-ig' ) .'<a>';
+			} else {
+				// Embed
+				echo '<a href="'. $repost_url .'" class="item-not-posted repost-item" title="'. __( 'Repost this media', 'wp-ig' ) .'">'. __( 'Repost This', 'wp-ig' ) .'<a>';
+			}
+		}
 	}
 }

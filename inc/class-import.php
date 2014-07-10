@@ -218,6 +218,26 @@ class WP_IG_Import{
 	}
 
 	/**
+	 * Prevent duplication. Return true to proceed, return int of post ID if current item exist
+	 * 
+	 * @param int post ID
+	 * 
+	 * @return bool|obj
+	 */
+	function prevent_duplication( $media_id ){
+		$existing = get_posts( array(
+			'meta_key' => '_instagram_id',
+			'meta_value' => $media_id
+		) );			
+
+		if( isset( $existing[0]->ID ) ){
+			return $existing[0]->ID;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * Importing Instagram Item
 	 * Passi item's object to automatically importing it to WP
 	 * 
@@ -280,6 +300,7 @@ class WP_IG_Import{
 			'post_date'		=> $post_date,
 			'post_type'		=> $this->post_type,
 			'tags_input'	=> $post_tags,
+			'post_author'	=> get_current_user_id(),
 		);
 
 		// Conditional arguments
@@ -301,30 +322,34 @@ class WP_IG_Import{
 
 		$post_id = wp_insert_post( $post_args );
 
-		// Set post format
-		set_post_format( $post_id, $post_format );
+		if( $post_id ){
+			// Set post format
+			set_post_format( $post_id, $post_format );
 
-		// Import media
-		$media_id = $this->upload_media( $media_url, $post_id );
+			// Import media
+			$media_id = $this->upload_media( $media_url, $post_id );
 
-		switch ( $post_format ) {
-			case 'video':
-				$meta_id_video = update_post_meta( $post_id, '_format_video_embed', wp_get_attachment_url( $media_id ) );
-				break;
-			
-			default:
-				$featured_image = set_post_thumbnail( $post_id, $media_id );
-				break;
+			switch ( $post_format ) {
+				case 'video':
+					$meta_id_video = update_post_meta( $post_id, '_format_video_embed', wp_get_attachment_url( $media_id ) );
+					break;
+				
+				default:
+					$featured_image = set_post_thumbnail( $post_id, $media_id );
+					break;
+			}
+
+			// Insert appropriate post meta
+			update_post_meta( $post_id, '_post_source', 'instagram' );
+			update_post_meta( $post_id, '_instagram_id', $item->id );
+			update_post_meta( $post_id, '_instagram_filter', $item->filter );
+			update_post_meta( $post_id, '_instagram_user_id', $item->user->id );
+			update_post_meta( $post_id, '_instagram_data', $item );		
+
+			return $post_id;
+		} else {
+			return new WP_Error( 400, __( 'Cannot import Instagram media', 'wp-ig' ) );
 		}
-
-		// Insert appropriate post meta
-		update_post_meta( $post_id, '_post_source', 'instagram' );
-		update_post_meta( $post_id, '_instagram_id', $item->id );
-		update_post_meta( $post_id, '_instagram_filter', $item->filter );
-		update_post_meta( $post_id, '_instagram_user_id', $item->user->id );
-		update_post_meta( $post_id, '_instagram_data', $item );		
-
-		return $post_id;
 	}
 
 	/**
