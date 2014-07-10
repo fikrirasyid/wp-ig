@@ -93,6 +93,19 @@ class WP_IG_Import{
 	}
 
 	/**
+	 * Get embed code
+	 * 
+	 * @return string
+	 */
+	function get_embed_code( $media ){
+		$src = str_replace('http:', '', $media->link);
+
+		$content = "<iframe src='{$src}embed/' width='100%' height='560' frameborder='0' scrolling='no' allowtransparency='true' style='display: block; margin: 0 auto 15px;'></iframe>";
+
+		return $content;
+	}
+
+	/**
 	 * Importing Instagram media
 	 * 
 	 * @param array of params similar to WP_IG_API->user_media
@@ -245,7 +258,7 @@ class WP_IG_Import{
 	 * 
 	 * @return mixed int|bool of post ID or false
 	 */
-	function import_item( $item ){
+	function import_item( $item, $import_media = true, $post_status = 'publish' ){
 		
 		// Variables
 		$post_title = substr($item->caption->text, 0, 30 );
@@ -269,8 +282,6 @@ class WP_IG_Import{
 		// Adding original link
 		$post_content .= '<p><cite>'. sprintf( __( 'View Original: %s', 'wp-ig' ), "<a href='{$item->link}' title='{$item->caption->text}' target='_blank'>{$item->link}</a>" ) .'</cite></p>';
 
-		$post_status	 = 'publish';
-
 		$post_date		 = date( 'Y-m-d H:i:s', ( intval( $item->created_time ) + ( wp_timezone_override_offset() * 60 * 60 ) ) ); // Instagram gives timestamp in GMT hence it should be adjusted to user's preference
 
 		$post_tags		 = $item->tags;
@@ -289,6 +300,11 @@ class WP_IG_Import{
 			default:
 				$media_url = $item->images->standard_resolution->url;
 				break;
+		}
+
+		// If user don't want to import media, let's assume it want to embed the media instead
+		if( !$import_media ){
+			$post_content 	= $this->get_embed_code( $item );
 		}
 
 		// Insert post
@@ -327,16 +343,20 @@ class WP_IG_Import{
 			set_post_format( $post_id, $post_format );
 
 			// Import media
-			$media_id = $this->upload_media( $media_url, $post_id );
-
-			switch ( $post_format ) {
-				case 'video':
-					$meta_id_video = update_post_meta( $post_id, '_format_video_embed', wp_get_attachment_url( $media_id ) );
-					break;
+			if( $import_media ){
 				
-				default:
-					$featured_image = set_post_thumbnail( $post_id, $media_id );
-					break;
+				$media_id = $this->upload_media( $media_url, $post_id );
+
+				switch ( $post_format ) {
+					case 'video':
+						$meta_id_video = update_post_meta( $post_id, '_format_video_embed', wp_get_attachment_url( $media_id ) );
+						break;
+					
+					default:
+						$featured_image = set_post_thumbnail( $post_id, $media_id );
+						break;
+				}
+
 			}
 
 			// Insert appropriate post meta

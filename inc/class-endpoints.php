@@ -154,12 +154,54 @@ class WP_IG_Endpoints{
 	 */
 	function endpoint_repost(){
 
-		$defaults = array(
-			'id' 	=> false,
-			'_n'	=> false
-		);
+		// Get media data
+		$media = $this->media( 'repost' );
 
-		$args = wp_parse_args( $_REQUEST, $defaults );
+		// Check if media data is fetched or not
+		if( is_wp_error( $media ) ){
+			
+			_e( 'Instagram media cannot be found' );
+
+		} else {
+
+			// Prevent duplication
+			$prevent_duplication = $this->import()->prevent_duplication( $media->id );
+
+			if( $prevent_duplication === true ){
+				
+				// Import media
+				$import = $this->import()->import_item( $media, false, 'draft' );
+
+				// Check if media is successfully imported or not
+				if( is_wp_error( $import ) ){
+
+					$output = new WP_Error( 400, __( 'Error importing media', 'wp-ig' ) );
+
+				} else {
+
+					$output = array(
+						'id' 		=> $import,
+					);
+
+				}
+			} else {
+				$output = array(
+					'id' 		=> $prevent_duplication,
+				);
+			}		
+
+			// Redirect based on process status
+			if( isset( $output['id'] ) ){
+			
+				wp_redirect( admin_url() . 'post.php?action=edit&post=' . $output['id'] );
+			
+			} else {
+
+				_e( 'Error reposting media. Please try again later', 'wp-ig' );
+
+			}			
+
+		}
 
 		die();
 	}
