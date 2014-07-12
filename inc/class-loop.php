@@ -1,10 +1,13 @@
 <?php
+/**
+ * Integrating WP-IG's feature to WordPress' loop of content
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * Integration WP-IG's feature to WordPress' loop of content
- */
 class WP_IG_Loop{
 	function __construct(){
 		add_filter( 'post_class', array( $this, 'post_class') );

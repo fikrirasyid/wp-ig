@@ -1,10 +1,13 @@
 <?php
+/**
+ * Wrapper for Instagram API
+ * 
+ * @package WP_IG/API
+ * @since 0.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * Wrapper for Instagram API
- */
 class WP_IG_API{
 	var $access_token;
 	var $endpoint;

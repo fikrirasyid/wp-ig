@@ -1,10 +1,13 @@
 <?php
+/**
+ * Registering & displaying dashboard interface
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * Registering all dashboard pages needed
- */
 class WP_IG_Dashboard{
 	var $redirect_uri;
 	var $prefix;

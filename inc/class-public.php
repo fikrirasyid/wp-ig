@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Processing WP_IG content for public
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class WP_IG_Public{

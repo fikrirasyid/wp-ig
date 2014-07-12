@@ -1,10 +1,12 @@
 <?php
-
+/**
+ * Import content mechanism
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * Providing import mechanism
- */
 class WP_IG_Import{
 
 	var $base_url;

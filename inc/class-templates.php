@@ -1,10 +1,12 @@
 <?php
-
+/**
+ * HTML template for API output
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * HTML templating for API output
- */
 class WP_IG_Templates{
 	var $prefix;	
 	var $account;
