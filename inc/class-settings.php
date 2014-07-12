@@ -51,6 +51,196 @@ class WP_IG_Settings{
 	}
 
 	/**
+	 * Printing form fields based on the array given
+	 * 
+	 * @param array of formatted fields
+	 * 
+	 * @return void
+	 */
+	function fields( $fields ){
+		if( empty( $fields) ){
+			return;
+		}
+
+		// Loop the fields settings
+		foreach ($fields as $field) {
+
+			$default_field = array(
+				'type' 			=> '',
+				'content' 		=> '',
+				'label'			=> '',
+				'id'			=> 'id',
+				'value'			=> 'value',
+				'placeholder' 	=> '',
+				'attr'			=> array(),
+				'dropdown_type'	=> false,
+				'description'	=> false,
+				'options'		=> false,
+			);
+
+			$field = wp_parse_args( $field, $default_field );
+
+			extract( $field );
+
+			switch ( $type ) {
+				case 'heading':
+					echo "<h3>$content</h3>";
+					break;
+
+				case 'heading_sub':
+					echo "<h4>$content</h4>";
+					break;
+
+				case 'ol_start':
+					echo '<ol>';
+					break;
+
+				case 'ol_end':
+					echo '</ol>';
+					break;
+
+				case 'form_table_start':
+					echo '<table class="form-table"><tbody>';
+					break;
+
+				case 'form_table_end':
+					echo '</tbody></table>';
+					break;
+
+				case 'break':
+					echo '<br />';
+					break;
+
+				case 'p':
+					echo "<p>$content</p>";
+					break;
+
+				case 'li':				
+					echo "<li>$content</li>";
+					break;
+
+				case 'field_text':
+					?>
+						<tr>
+							<th scope="row">
+								<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+							</th>
+							<td>
+								<?php 
+									$this->text( $field ); 
+
+									if( $description ){
+										echo "<p class='description'>$description</p>";
+									}
+								?>
+							</td>
+						</tr>
+					<?php
+					break;
+				
+				case 'field_dropdown':
+					?>
+						<tr>
+							<th scope="row">
+								<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+							</th>
+							<td>
+								<?php 
+									$this->select_dropdown( $dropdown_type, $value ); 
+
+									if( $description ){
+										echo "<p class='description'>$description</p>";
+									}
+								?>
+							</td>
+						</tr>
+					<?php
+					break;
+
+				case 'field_radio':
+					?>
+						<tr>
+							<th scope="row">
+								<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+							</th>
+							<td>
+								<?php 
+									$this->radio( $field ); 
+
+									if( $description ){
+										echo "<p class='description'>$description</p>";
+									}
+								?>
+							</td>
+						</tr>
+					<?php
+					break;
+
+				case 'field_checkboxes':
+					?>	
+						<tr>
+							<th scope="row">
+								<label for="<?php echo $id; ?>"><?php echo $label; ?></label>
+							</th>
+							<td>
+								<fieldset>
+									<?php
+										foreach ($options as $option_key => $option_value) {
+											$this->checkbox( $option_value );
+										}
+									?>
+								</fieldset>
+								<?php 
+									if( $description ){
+										echo "<p class='description'>$description</p>";
+									}
+								?>
+							</td>
+						</tr>
+					<?php
+					break;
+
+				default:
+					# code...
+					break;
+			}
+
+		}
+	}
+
+	/**
+	 * Print text
+	 * 
+	 * @param array
+	 * 
+	 * @return void
+	 */
+	function text( $args ){
+
+		$defaults = array(
+			'id'			=> 'id',
+			'value'			=> '',
+			'placeholder' 	=> '',
+			'attr'			=> array(),
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		extract( $args );
+
+		// Printing custom attributes
+		$attributes = '';
+
+		if( !empty( $attr ) ){
+			foreach ($attr as $attr_key => $attr_value) {
+				$attributes .= " {$attr_key}='{$attr_value}'";
+			}
+		}
+
+		echo "<input type='text' name='$id' id='$id' value='$value' placeholder='$placeholder' class='regular-text'$attributes>";
+	}
+
+	/**
 	 * Get dropdown
 	 * 
 	 * @param $data 
@@ -112,11 +302,11 @@ class WP_IG_Settings{
 					'label'	=> __( 'No', 'wp-ig' )
 				)
 			),
-			'default' 	=> 'yes'
+			'value' 	=> 'no'
 		);
 
 		$default_option = array(
-			'value' => 'yes',
+			'val'	=> 'yes',
 			'label' => __( 'Yes', 'wp-ig' )
 		);
 
@@ -132,11 +322,11 @@ class WP_IG_Settings{
 
 			extract( $option );
 
-			$option_id = $id . '_' . sanitize_title( $value );
+			$option_id = $id . '_' . sanitize_title( $val );
 
 			?>
 				<label for="<?php echo $option_id; ?>">
-					<input type="radio" name="<?php echo $this->prefix . $id; ?>" value="<?php echo $value; ?>" id="<?php echo $option_id; ?>" <?php if( $default == $value ){ echo 'checked="checked"';}?>>
+					<input type="radio" name="<?php echo $this->prefix . $id; ?>" value="<?php echo $val; ?>" id="<?php echo $option_id; ?>" <?php if( $value == $val ){ echo 'checked="checked"';}?>>
 					<?php echo $label; ?>
 				</label>
 				<br>
