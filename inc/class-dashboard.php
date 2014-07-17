@@ -97,6 +97,7 @@ class WP_IG_Dashboard{
 	function enqueue_scripts_styles( $hook ){
 		if( $hook == 'toplevel_page_wp_ig' ){
 			wp_enqueue_style( 'wp_ig_dashboard', WP_IG_URL . 'css/dashboard.css', false, '1.0.0' );
+			wp_enqueue_script( 'wp_ig', WP_IG_URL . 'js/wp-ig.js', array( 'jquery' ), '1.0' );
 		}
 	}
 
