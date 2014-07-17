@@ -49,46 +49,30 @@
 			<a href="#" id="deauth-instagram"><?php _e( "Disconnect", "wp_ig" ); ?></a>
 		</div>
 	</div>
-	
-	<h2 id='feed-title'>
-	<?php
-		if( $this->current_page->query_string('tag_name') ){
-			echo "#{$this->current_page->query_string('tag_name')}";
-		} elseif( $this->current_page->query_string( 'username' ) ){			
 
-			printf( __( "@%s's Feed", "wp_ig" ), $username );
-			
+	<?php 	
+		if( $this->current_page->query_string( 'tag_name' ) ){
+
+			// Hashtag page		
+
+			$method = "tag_media";
+			$args = array( 
+				'max_id' => $this->current_page->query_string( 'max_id' ),
+				'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
+			);
 		} else {
-			_e( "Your Instagram Media", "wp_ig" );
+
+			// Default
+
+			$method = "user_media";
+			$args = array( 
+				'max_id' => $this->current_page->query_string( 'max_id' ),
+				'user_id' => $account->id
+			);
 		}
+
+		$this->templates->display( $method, $args, false, true );
 	?>
-	</h2>
-
-	<div id="feed">
-		<?php 	
-			if( $this->current_page->query_string( 'tag_name' ) ){
-
-				// Hashtag page		
-
-				$method = "tag_media";
-				$args = array( 
-					'max_id' => $this->current_page->query_string( 'max_id' ),
-					'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
-				);
-			} else {
-
-				// Default
-
-				$method = "user_media";
-				$args = array( 
-					'max_id' => $this->current_page->query_string( 'max_id' ),
-					'user_id' => $account->id
-				);
-			}
-
-			$this->templates->display( $method, $args );
-		?>
-	</div>
 
 	<script type="text/javascript">
 		jQuery(document).ready(function($){

@@ -48,16 +48,18 @@
 	}
 }
 
-#feed-title{
-	width: 398px;
-	background: white;
-	margin: 0 auto;
-	padding: 15px 30px;
-	border: 1px solid #dfdfdf;
-	text-transform: uppercase;
-	font-weight: bold;
-	text-align: center;
-}
-
 // Importing public styling instead of repeating it here
 @import "wp-ig";
+
+.wp-admin{
+	.wp-ig.instagram-items-title{
+		width: 398px;
+		background: white;
+		margin: 0 auto;
+		padding: 15px 30px;
+		border: 1px solid #dfdfdf;
+		text-transform: uppercase;
+		font-weight: bold;
+		text-align: center;
+	}
+}
