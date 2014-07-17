@@ -45,7 +45,7 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function get_user_by_id( $user_id ){
+	function user_by_id( $user_id ){
 		$endpoint = "{$this->endpoint}users/$user_id/?access_token=$this->access_token";
 
 		return $this->get( $endpoint );
@@ -56,7 +56,7 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function get_self_feed( $args ){
+	function self_feed( $args ){
 
 		// Setup default values
 		$defaults = array(
@@ -88,7 +88,7 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function get_user_media( $args ){
+	function user_media( $args ){
 
 		// Setup default values
 		$defaults = array(
@@ -123,7 +123,7 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function get_user_search( $args ){
+	function user_search( $args ){
 
 		// Setup default values
 		$defaults = array(
@@ -156,7 +156,7 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function get_tag_media( $args ){
+	function tag_media( $args ){
 
 		// Setup default values
 		$defaults = array(

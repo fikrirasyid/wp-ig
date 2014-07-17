@@ -9,7 +9,7 @@
 			$username = sanitize_text_field( $this->current_page->query_string( 'username' ) );
 
 			// Get username data from instagram API
-			$user = $this->api()->get_user_search( array( 'q' => $username ) );
+			$user = $this->api()->user_search( array( 'q' => $username ) );
 
 			if( isset( $user->data[0] ) ){
 				$account = $user->data[0];
@@ -64,7 +64,7 @@
 
 				// Hashtag page		
 
-				$method = "get_tag_media";
+				$method = "tag_media";
 				$args = array( 
 					'max_id' => $this->current_page->query_string( 'max_id' ),
 					'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
@@ -73,7 +73,7 @@
 
 				// Default
 
-				$method = "get_user_media";
+				$method = "user_media";
 				$args = array( 
 					'max_id' => $this->current_page->query_string( 'max_id' ),
 					'user_id' => $account->id
