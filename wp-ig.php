@@ -13,5 +13,9 @@ if (!defined('WP_IG_DIR'))
     define('WP_IG_DIR', plugin_dir_path( __FILE__ ));
 
 
+if (!defined('WP_IG_URL'))
+    define('WP_IG_URL', plugin_dir_url( __FILE__ ));	
+
+
 // Requiring files
 require_once( 'inc/class-dashboard.php' );

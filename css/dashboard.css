@@ -1,0 +1,41 @@
+#current-instagram-profile {
+  background: #fdfdfd;
+  position: relative;
+  padding: 20px;
+  margin: 20px 0 0;
+  min-height: 100px;
+  box-shadow: 0 0 3px #cfcfcf;
+  border-radius: 2px;
+}
+#current-instagram-profile .avatar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+#current-instagram-profile .avatar img {
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+}
+#current-instagram-profile .data {
+  display: block;
+  margin: 0 0 0 120px;
+}
+#current-instagram-profile .data .full-name {
+  margin: 0 0 5px;
+}
+#current-instagram-profile .data .username {
+  margin: 0  0 5px;
+}
+
+#deauth-instagram {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #a00 !important;
+  text-decoration: none;
+}
+#deauth-instagram:hover {
+  color: red;
+  text-decoration: underline;
+}
