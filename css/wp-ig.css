@@ -63,18 +63,11 @@
   color: #999;
 }
 .wp-ig.instagram-items .instagram-item .info {
-  border-bottom: 1px solid #dfdfdf;
   padding: 5px 10px 5px 70px;
 }
-.wp-ig.instagram-items .instagram-item .likes {
-  padding: 5px 10px 0 70px;
-  margin-bottom: -3px;
-}
-.wp-ig.instagram-items .instagram-item .likes {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-weight: bold;
+.wp-ig.instagram-items .instagram-item .instagram-comments {
+  border-top: 1px solid #dfdfdf;
+  box-shadow: inset 0 1px 7px rgba(0, 0, 0, 0.05);
 }
 .wp-ig.instagram-items .instagram-item .instagram-comments .instagram-comment {
   position: relative;
