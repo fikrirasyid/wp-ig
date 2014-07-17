@@ -9,6 +9,23 @@ jQuery(document).ready(function($) {
 		});
 	}
 
+	// On shortcode, load content on the same wrapper
+	$('.wp-ig-wrap').on( 'click', '.onpage', function(e){
+		e.preventDefault();
+
+		var link 	= $(this);
+		var source 	= link.attr('href');
+		var wrap 	= link.parents('.wp-ig-wrap');
+
+		// Add loading state
+		wrap.addClass('loading');
+
+		// Load the new content
+		wrap.load( source + " .wp-ig-wrap-inside", function(){
+			wrap.removeClass('loading');
+		});		
+	});
+
 	// Handling load more
 	$('body').on( 'click', '.more-instagram-items', function(e){
 		e.preventDefault();
