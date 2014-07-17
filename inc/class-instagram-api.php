@@ -35,15 +35,24 @@ class WP_IG_API{
 	 * Request to endpoint and parse its value
 	 * 
 	 * @param string endpoint
+	 * @param array of args - this should have been parsed on the method
 	 * 
 	 * @return array
 	 */
 	function get( $endpoint, $args = array() ){
 
-		// Parse the arguments, mainly for caching timeframe and order to ignore the cache
+		// Make sure that the args has transient and ignore_cache element
 		$args = wp_parse_args( $args, $this->plugin_defaults );
 
+		// Extract the args because it'll be easier to access variable directly
 		extract( $args );
+
+		// Pushes more parameters to the endpoint
+		foreach ($args as $key => $param) {
+			if( $param && !array_key_exists( $key, $this->plugin_defaults ) ){
+				$endpoint .= "&{$key}={$param}";
+			}
+		}		
 
 		// Get the transient key
 		$transient_key = $this->prefix . md5( $endpoint );
@@ -102,21 +111,14 @@ class WP_IG_API{
 			'min_id'		=> false,
 			'max_id'		=> false		
 		);
-
+		
 		// parse arguments
 		$args = wp_parse_args( $args, $defaults );
 
 		// Define endpoint
 		$endpoint = "{$this->endpoint}users/self/feed?access_token=$this->access_token";
 
-		// Pushes more parameters
-		foreach ($args as $key => $param) {
-			if( $param ){
-				$endpoint .= "&{$key}={$param}";
-			}
-		}
-
-		return $this->get( $endpoint );
+		return $this->get( $endpoint, $args );
 	}
 
 	/**
@@ -171,13 +173,6 @@ class WP_IG_API{
 		// Define endpoint
 		$endpoint = "https://api.instagram.com/v1/users/{$args['user_id']}/media/recent/?access_token={$this->access_token}";
 
-		// Pushes more parameters
-		foreach ($args as $key => $param) {
-			if( $param && !array_key_exists( $key, $this->plugin_defaults ) ){
-				$endpoint .= "&{$key}={$param}";
-			}
-		}
-
 		return $this->get( $endpoint, $args );
 	}
 
@@ -202,14 +197,7 @@ class WP_IG_API{
 		// Define endpoint
 		$endpoint = "https://api.instagram.com/v1/users/search?access_token={$this->access_token}";
 
-		// Pushes more parameters
-		foreach ($args as $key => $param) {
-			if( $param ){
-				$endpoint .= "&{$key}={$param}";
-			}
-		}
-
-		return $this->get( $endpoint );
+		return $this->get( $endpoint, $args );
 	}
 
 	// TAGS ---------------------------------
@@ -236,13 +224,6 @@ class WP_IG_API{
 		// Define endpoint
 		$endpoint = "https://api.instagram.com/v1/tags/{$args['tag_name']}/media/recent?access_token={$this->access_token}";
 
-		// Pushes more parameters
-		foreach ($args as $key => $param) {
-			if( $param ){
-				$endpoint .= "&{$key}={$param}";
-			}
-		}
-
-		return $this->get( $endpoint );
+		return $this->get( $endpoint, $args );
 	}
 }
