@@ -67,7 +67,12 @@ class WP_IG_Dashboard{
 		){
 			add_submenu_page( 'wp_ig', __( 'Import', 'wp-ig' ), __( 'Import', 'wp-ig' ), 'edit_others_posts', 'wp_ig_import', array( $this, 'page_import') );
 			add_submenu_page( 'wp_ig', __( 'Delete', 'wp-ig' ), __( 'Delete', 'wp-ig' ), 'edit_others_posts', 'wp_ig_delete', array( $this, 'page_delete') );
-			add_submenu_page( 'wp_ig', __( 'Setup', 'wp-ig' ), __( 'Setup', 'wp-ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );
+		}
+
+		if( $this->client_id && 
+			$this->client_secret
+		){
+			add_submenu_page( 'wp_ig', __( 'Setup', 'wp-ig' ), __( 'Setup', 'wp-ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );			
 		}
 	}
 
@@ -122,17 +127,23 @@ class WP_IG_Dashboard{
 	 * @return void
 	 */
 	function saving(){
-		// Updating value..
-		if( isset( $_POST['client_id'] ) && 
+		// Updating basic value
+		if(	isset( $_POST['client_id'] ) && 
 			isset( $_POST['client_secret'] ) && 
-			isset( $_POST['wp_ig_post_category'] ) &&
+			isset( $_POST['_wpnonce'] ) && 
+			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_setup' ) 
+		){
+			$saving_client_id 		= update_option( "{$this->prefix}client_id", sanitize_text_field( $_POST['client_id'] ) );
+			$saving_client_secret 	= update_option( "{$this->prefix}client_secret", sanitize_text_field( $_POST['client_secret'] ) );
+		}
+
+		// Updating advance value..
+		if( isset( $_POST['wp_ig_post_category'] ) &&
 			isset( $_POST['wp_ig_post_type'] ) &&
 			isset( $_POST['wp_ig_sync'] ) &&
 			isset( $_POST['_wpnonce'] ) && 
 			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_setup' ) ){
 
-			$saving_client_id 		= update_option( "{$this->prefix}client_id", sanitize_text_field( $_POST['client_id'] ) );
-			$saving_client_secret 	= update_option( "{$this->prefix}client_secret", sanitize_text_field( $_POST['client_secret'] ) );
 			$saving_post_type 		= update_option( "{$this->prefix}post_type", sanitize_text_field( $_POST['wp_ig_post_type'] ) );
 			$saving_post_category 	= update_option( "{$this->prefix}post_category", intval( $_POST['wp_ig_post_category'] ) );
 			$saving_sync 			= update_option( "{$this->prefix}sync", sanitize_text_field( $_POST['wp_ig_sync'] ) );
@@ -176,7 +187,11 @@ class WP_IG_Dashboard{
 		if( isset( $_GET['page'] ) && $_GET['page'] != 'wp_ig' && ( !$this->client_id || !$this->client_secret || $this->client_id == '' || $this->client_secret == '' ) ){
 			header( "Location: " . admin_url() . 'admin.php?page=wp_ig' );
 			exit();
-		}		
+		}	
+
+		// Updating client_id & client_secret
+		$this->client_id 			= get_option( "{$this->prefix}client_id" );
+		$this->client_secret 		= get_option( "{$this->prefix}client_secret" );			
 	}
 
 	/**
