@@ -27,6 +27,7 @@ require_once( 'inc/class-templates.php' );
 require_once( 'inc/class-dashboard.php' );
 require_once( 'inc/class-shortcodes.php' );
 require_once( 'inc/class-public.php' );
+require_once( 'inc/class-loop.php' );
 require_once( 'inc/template-tags.php' );
 
 // Setup
