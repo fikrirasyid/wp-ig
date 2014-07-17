@@ -400,7 +400,7 @@ class WP_IG_Templates{
 
 		$import_nonce = wp_create_nonce( "import_{$item->id}" );
 
-		$repost_nonce = wp_create_nonce( "report_{$item->id}" );
+		$repost_nonce = wp_create_nonce( "repost_{$item->id}" );
 
 		$import_url = admin_url() . "admin-ajax.php?action=wp_ig_import_item&id={$item->id}&_n={$import_nonce}";
 
@@ -420,7 +420,7 @@ class WP_IG_Templates{
 				echo '<a href="'. $import_url .'" class="item-not-posted import-item" title="'. __( 'Post this media', 'wp-ig' ) .'">'. __( 'Post This', 'wp-ig' ) .'<a>';
 			} else {
 				// Embed
-				echo '<a href="'. $repost_url .'" class="item-not-posted repost-item" title="'. __( 'Repost this media', 'wp-ig' ) .'">'. __( 'Repost This', 'wp-ig' ) .'<a>';
+				echo '<a href="'. $repost_url .'" class="item-not-posted repost-item" target="_blank" title="'. __( 'Repost this media', 'wp-ig' ) .'">'. __( 'Repost This', 'wp-ig' ) .'<a>';
 			}
 		}
 	}

@@ -80,8 +80,14 @@ class WP_IG_Loop{
 	 */
 	function get_prepend_image( $post ){
 		$id 	= get_post_thumbnail_id( $post->ID );
+
 		$url 	= wp_get_attachment_url( $id );
-		return "<p><img src='$url' title='{$post->post_title}' style='width: 100%;' /></p>";		
+
+		if( $url ){
+			return "<p><img src='$url' title='{$post->post_title}' style='width: 100%;' /></p>";
+		} else {
+			return;
+		}	
 	}
 
 	/**
@@ -94,21 +100,32 @@ class WP_IG_Loop{
 	function get_prepend_video( $post ){
 		$video = get_post_meta( $post->ID, '_format_video_embed', true );
 
-		$video_extensions = array( 'mp4', 'ogg' );
-	
-		$video_info = pathinfo( $video );
+		if( $video ){
+			ob_start();
 
-		// Check if this should be displayed using video tag
-		if( isset( $video_info['extension'] ) && in_array( $video_info['extension'], $video_extensions) ){
+			$video_extensions = array( 'mp4', 'ogg' );
+		
+			$video_info = pathinfo( $video );
 
-			echo "<video controls><source src='$video'></source></video>";
+			// Check if this should be displayed using video tag
+			if( isset( $video_info['extension'] ) && in_array( $video_info['extension'], $video_extensions) ){
 
-		} elseif( strpos( $video, '<iframe' ) !== false ){
-			// If this is embed code
-			echo $video;
+				echo "<video controls><source src='$video'></source></video>";
+
+			} elseif( strpos( $video, '<iframe' ) !== false ){
+				// If this is embed code
+				echo $video;
+			} else {
+				// Otherwise, assume that this is oEmbed link and get the content using built-in oEmbed mechanism
+				echo wp_oembed_get( $video );
+			}
+
+			return ob_get_clean();			
+
 		} else {
-			// Otherwise, assume that this is oEmbed link and get the content using built-in oEmbed mechanism
-			echo wp_oembed_get( $video );
+
+			return;
+			
 		}
 	}
 }
