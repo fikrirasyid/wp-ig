@@ -1,11 +1,14 @@
 <?php
-/*
-Plugin Name: WP-IG
-Plugin URI: http://fikrirasyid.com/kicau
-Description: Integrating Instagram account to WordPress site. WP-IG enables you to: 1) display tag / user feed using shortcode, 2) importing all of your Instagram photo/video, 3) syncing your future Instagram photo/video to your site, 4) cherry-pick your Instagram photo/video to be posted, 5) Embed other people's Instagram photo/video easily.
-Version: 0.1
-Author: Fikri Rasyid
-Author URI: http://fikrirasyid.com/
+/**
+ * Plugin Name: WP-IG
+ * Plugin URI: http://fikrirasyid.com/kicau
+ * Description: Integrating Instagram account to WordPress site. WP-IG enables you to: 1) display tag / user feed using shortcode, 2) importing all of your Instagram photo/video, 3) syncing your future Instagram photo/video to your site, 4) cherry-pick your Instagram photo/video to be posted, 5) Embed other people's Instagram photo/video easily.
+ * Version: 0.1
+ * Author: Fikri Rasyid
+ * Author URI: http://fikrirasyid.com/
+ * 
+ * @package WP_IG
+ * @author Fikri Rasyid
 */
 
 // Constants
@@ -16,7 +19,11 @@ if (!defined('WP_IG_DIR'))
 if (!defined('WP_IG_URL'))
     define('WP_IG_URL', plugin_dir_url( __FILE__ ));	
 
-// Setup
+/**
+ * Main WP_IG class
+ * 
+ * @version 0.1.0
+ */
 class WP_IG{
 
 	var $prefix;

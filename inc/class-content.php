@@ -1,10 +1,13 @@
 <?php
+/**
+ * Handling content imported/synced/embedded using WP_IG
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * All things related to wp-ig generated post
- */
 class WP_IG_Content{
 	/**
 	 * Get post with 

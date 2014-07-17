@@ -1,4 +1,10 @@
 <?php
+/**
+ * Helper for extracting current page information
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

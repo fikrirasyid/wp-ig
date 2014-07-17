@@ -1,10 +1,12 @@
 <?php
-
+/**
+ * AJAX Endpoints for processing request
+ * 
+ * @package WP_IG/Classes
+ * @since 0.1
+ */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-/**
- * Registering and processing endpoints
- */
 class WP_IG_Endpoints{
 	var $prefix;
 
