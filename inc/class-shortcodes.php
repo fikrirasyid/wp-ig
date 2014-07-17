@@ -1,9 +1,13 @@
 <?php
 class WP_IG_Shortcodes{
 	var $prefix;
+	var $wp_ig_source_url;
+	var $wpspin_url;
 
 	function __construct(){
 		$this->prefix = 'wp_ig_';
+		$this->wp_ig_source_url = home_url( '/wp-admin/admin-ajax.php?action=instagram' );
+		$this->wpspin_url 	= home_url( '/wp-includes/images/wpspin-2x.gif' );
 
 		add_shortcode( 'instagram_user_media', array( $this, 'user_media' ) );
 	}
@@ -39,12 +43,22 @@ class WP_IG_Shortcodes{
 			'ignore_cache'	=> false // ignore the cache and get the data from the API instead 
 		), $atts );
 
-		extract( $args );
+		// define source url
+		$wp_ig_source_url = $this->wp_ig_source_url;
+		foreach ( $args as $key => $arg ) {
+			$wp_ig_source_url .= "&{$key}={$arg}";
+		}
 
 		// Request for the feed, return as string
 		ob_start();
 
-		$this->templates()->display( 'user_media', $args, false, array( 'title' => true ) );
+		echo "<div class='wp-ig-wrap' data-source='{$wp_ig_source_url}'>";
+
+		echo "<p class='wp-ig-wrap-loading'><img src='{$this->wpspin_url}' width='16' height='16' class='loading' /><br /> ". __( 'Loading Instagram Contents...', 'wp_ig' ) ."</p>";
+
+		// $this->templates()->display( 'user_media', $args, false, array( 'title' => true ) );
+
+		echo "</div>";
 
 		return ob_get_clean();
 	}

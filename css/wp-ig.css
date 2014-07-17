@@ -1,3 +1,11 @@
+.wp-ig-wrap-loading {
+  text-align: center;
+}
+.wp-ig-wrap-loading img.loading {
+  width: 16px;
+  height: 16px;
+}
+
 .wp-ig.instagram-items-title {
   text-align: center;
   margin-bottom: 20px;
