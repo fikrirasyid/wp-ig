@@ -42,7 +42,7 @@ class WP_IG_Shortcodes{
 		// Request for the feed, return as string
 		ob_start();
 
-		$this->templates()->display( 'user_media', $args, false, true );
+		$this->templates()->display( 'user_media', $args, false, array( 'title' => true ) );
 
 		return ob_get_clean();
 	}

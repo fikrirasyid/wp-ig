@@ -33,36 +33,93 @@ class WP_IG_Templates{
 	 * 
 	 * @return void
 	 */
-	function display( $method, $args = array(), $context = false, $title = false ){
+	function display( $method, $args = array(), $context = false, $options = array() ){
 		$output = $this->api->$method( $args );
 
-		// Print title, optionally
-		if( $title ){
-			switch ( $method ) {
-				case 'tag_media':
-					if( isset( $args['tag_name'] ) ){
-						echo "<h2 class='wp-ig instagram-items-title'>#{$args['tag_name']}</h2>";						
-					}
-					break;
+		// Options config, display UI optionally
+		$default_options = array(
+			'title' 	=> false,
+			'profile' 	=> false
+		);
 
-				case 'user_media':
-					if( isset( $output->data{0}->user->username ) ){
-						echo "<h2 class='wp-ig instagram-items-title'>";
-						printf( __( "%s's Instagram Feed", "wp_ig" ), $output->data{0}->user->username  ); 			
-						echo "</h2>";
-					} else{
-						echo "<div class='clear' style='margin-top: 40px;'></div>";
-					}					
-					break;
-				
-				default:
-					// Do nothing
-					break;
-			}
+		$options = wp_parse_args( $options, $default_options );
+
+		extract( $options );
+
+		// Display additional information conditionally based on method and options
+		switch ( $method ) {
+			case 'tag_media':
+
+
+				// Display tag title
+				if( $title && isset( $args['tag_name'] ) ){
+					echo "<h2 class='wp-ig instagram-items-title'>#{$args['tag_name']}</h2>";						
+				}
+				break;
+
+			case 'user_media':
+
+				// Display user profile
+				if( $profile && isset( $output->data{0}->user->id ) ){
+					
+					// If this is signed in user, use existing data instead fetching from endpoint
+					if( $output->data{0}->user->id == $this->account->id ){
+						$user = $this->account;
+					} else {
+						$user = $this->api->user_by_id( $output->data{0}->user->id )->data;
+					}
+
+					if( isset( $user->id ) ){
+						$this->the_user_profile( $user );
+					}
+
+				}
+
+				// Display user title
+				if( $title && isset( $output->data{0}->user->username ) ){
+					echo "<h2 class='wp-ig instagram-items-title'>";
+					printf( __( "%s's Instagram Feed", "wp_ig" ), $output->data{0}->user->username  ); 			
+					echo "</h2>";
+				}				
+				break;
+			
+			default:
+				// Do nothing
+				break;
 		}
 		
 		// Print output
 		$this->the_items( $output, $context );
+	}
+
+	/**
+	 * Display user profile
+	 * 
+	 * @param obje user variable
+	 * 
+	 * @return void
+	 */
+	function the_user_profile( $user ){
+
+		if( !isset( $user->username ) )
+			return;
+
+		?>
+			<div id="current-instagram-profile">
+				<div class="avatar">
+					<img src="<?php echo $user->profile_picture; ?>" alt="">
+				</div>
+				<div class="data">
+					<h3 class="full-name"><?php echo $user->full_name; ?></h3>
+					<h4 class="username"><a href="http://instagram.com/<?php echo $user->username; ?>" title="<?php echo $user->username; _e( " on Instagram", "wp_ig" ); ?>"><?php echo $user->username; ?></a> - <a href="<?php echo $user->website; ?>"><?php echo $user->website; ?></a></h4>
+					<?php if( !empty( $user->website ) ) : ?>
+					<?php endif; ?>
+					<div class="bio">
+						<?php echo wpautop( $user->bio ); ?>
+					</div>
+				</div>
+			</div>
+		<?php
 	}
 
 	/**

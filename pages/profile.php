@@ -2,76 +2,27 @@
 	<?php
 		$access_token = get_option( "{$this->prefix}access_token" );
 
-		// Determine if this is another user's page or current user page
-		if( $this->current_page->query_string( 'username' ) ){
-
-			// Get username
-			$username = sanitize_text_field( $this->current_page->query_string( 'username' ) );
-
-			// Get username data from instagram API
-			$user = $this->api()->user_search( array( 'q' => $username ) );
-
-			if( isset( $user->data[0] ) ){
-				$account = $user->data[0];
-			} else {
-				$account = false;
-			}
-
-		} elseif( $this->current_page->query_string( 'user_id' ) ) {
-
-			$user = $this->api()->user_by_id( intval( $this->current_page->query_string( 'user_id' ) ) );
-
-			$account = $user->data;
-
-		} else {
-			$account = get_option( "{$this->prefix}account" );
-		}
-
 		// Display connect or profile page based on current user log in state
+		$account = get_option( "{$this->prefix}account" );
+
 		if( $account ) :
 	?>
 	
 	<h2><?php _e( "Instagram", "wp_ig" ); ?></h2>
 
-	<div id="current-instagram-profile">
-		<div class="avatar">
-			<img src="<?php echo $account->profile_picture; ?>" alt="">
-		</div>
-		<div class="data">
-			<h3 class="full-name"><?php echo $account->full_name; ?></h3>
-			<h4 class="username"><a href="http://instagram.com/<?php echo $account->username; ?>" title="<?php echo $account->username; _e( " on Instagram", "wp_ig" ); ?>"><?php echo $account->username; ?></a> - <a href="<?php echo $account->website; ?>"><?php echo $account->website; ?></a></h4>
-			<?php if( !empty( $account->website ) ) : ?>
-			<?php endif; ?>
-			<div class="bio">
-				<?php echo wpautop( $account->bio ); ?>
-			</div>			
-
-			<a href="#" id="deauth-instagram"><?php _e( "Disconnect", "wp_ig" ); ?></a>
-		</div>
-	</div>
-
 	<?php 	
 		if( $this->current_page->query_string( 'tag_name' ) ){
-
 			// Hashtag page		
-
 			$method = "tag_media";
-			$args = array( 
-				'max_id' => $this->current_page->query_string( 'max_id' ),
-				'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
-			);
 		} else {
-
-			// Default
-
+			// Default (user page)
 			$method = "user_media";
-			$args = array( 
-				'max_id' => $this->current_page->query_string( 'max_id' ),
-				'user_id' => $account->id
-			);
 		}
 
-		$this->templates->display( $method, $args, false, true );
+		$args = $_REQUEST;
+		unset( $_REQUEST['page'] );
+		
+		$this->templates->display( $method, $args, false, array( 'title' => true, 'profile' => true ) );
 	?>
 
 	<script type="text/javascript">
