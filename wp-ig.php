@@ -16,20 +16,6 @@ if (!defined('WP_IG_DIR'))
 if (!defined('WP_IG_URL'))
     define('WP_IG_URL', plugin_dir_url( __FILE__ ));	
 
-// Requiring files
-require_once( 'inc/class-settings.php' );
-require_once( 'inc/class-instagram-api.php' );
-require_once( 'inc/class-import.php' );
-require_once( 'inc/class-sync.php' );
-require_once( 'inc/class-content.php' );
-require_once( 'inc/class-current-page.php' );
-require_once( 'inc/class-templates.php' );
-require_once( 'inc/class-dashboard.php' );
-require_once( 'inc/class-shortcodes.php' );
-require_once( 'inc/class-public.php' );
-require_once( 'inc/class-loop.php' );
-require_once( 'inc/template-tags.php' );
-
 // Setup
 class WP_IG{
 
@@ -40,6 +26,8 @@ class WP_IG{
 
 		register_activation_hook( __FILE__, array( $this, 'activation' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+
+		$this->requiring_files();
 	}
 
 	/**
@@ -63,6 +51,26 @@ class WP_IG{
 	 */
 	function deactivation(){
 		wp_clear_scheduled_hook( 'wp_ig_sync' );
+	}
+
+	/**
+	 * Requiring other files
+	 * 
+	 * @return void
+	 */
+	function requiring_files(){
+		require_once( 'inc/class-settings.php' );
+		require_once( 'inc/class-instagram-api.php' );
+		require_once( 'inc/class-import.php' );
+		require_once( 'inc/class-sync.php' );
+		require_once( 'inc/class-content.php' );
+		require_once( 'inc/class-current-page.php' );
+		require_once( 'inc/class-templates.php' );
+		require_once( 'inc/class-dashboard.php' );
+		require_once( 'inc/class-shortcodes.php' );
+		require_once( 'inc/class-public.php' );
+		require_once( 'inc/class-loop.php' );
+		require_once( 'inc/template-tags.php' );
 	}
 }
 new WP_IG;
