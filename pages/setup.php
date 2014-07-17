@@ -102,6 +102,39 @@
 			</tbody>
 		</table>
 
+		<br>
+		<h3><?php _e( 'D. Adjust The Way Instagram\'s Media Is Displayed', 'wp-ig' ); ?></h3>
+		<h4><?php _e( 'If you do not see the image or video on your imported Instagram post, you may want to check these boxes below.', 'wp-ig' ); ?></h4>
+		<p><?php _e( '<strong>Technical details</strong>: Instagram\'s media (image or video) is imported and assigned to a post as <em>featured post</em> using "<em>image</em>" post format or <em>post meta</em> using "<em>video</em>" post format. Unfortunately, not every theme supports post format or displays featured image and post meta video accordingly. Thus, these options below enable you to prepend the imported Instagram media to the top of your content.', 'wp-ig' ); ?></p>
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row">
+						<?php _e( 'Prepend Media', 'wp-ig' ); ?>
+					</th>
+					<td>
+						<fieldset>
+							<?php
+								$this->settings()->checkbox( array(
+									'id' 		=> 'prepend_on_index',
+									'value'		=> 'yes',
+									'default' 	=> get_option( 'wp_ig_prepend_on_index', 'yes' ),
+									'label'		=> __( 'Display imported Instagram media on top of the content at homepage, category page, and search page', 'wp-ig' ),
+								) );
+
+								$this->settings()->checkbox( array(
+									'id' 		=> 'prepend_on_single',
+									'value'		=> 'yes',
+									'default' 	=> get_option( 'wp_ig_prepend_on_single', 'yes' ),
+									'label'		=> __( 'Display imported Instagram media on top of the content at article page', 'wp-ig' ),
+								) );								
+							?>
+						</fieldset>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 		<?php wp_nonce_field( "wp_ig_setup", "_wpnonce" ); ?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'wp-ig' ); ?>">

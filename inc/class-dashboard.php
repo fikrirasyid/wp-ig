@@ -145,11 +145,25 @@ class WP_IG_Dashboard{
 			isset( $_POST['wp_ig_sync'] ) &&
 			isset( $_POST['_wpnonce'] ) && 
 			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_setup' ) ){
+
 			$saving_client_id 		= update_option( "{$this->prefix}client_id", sanitize_text_field( $_POST['client_id'] ) );
 			$saving_client_secret 	= update_option( "{$this->prefix}client_secret", sanitize_text_field( $_POST['client_secret'] ) );
 			$saving_post_type 		= update_option( "{$this->prefix}post_type", sanitize_text_field( $_POST['wp_ig_post_type'] ) );
 			$saving_post_category 	= update_option( "{$this->prefix}post_category", intval( $_POST['wp_ig_post_category'] ) );
 			$saving_sync 			= update_option( "{$this->prefix}sync", sanitize_text_field( $_POST['wp_ig_sync'] ) );
+			
+			// Saving prepend item prefence
+			if( isset( $_POST['wp_ig_prepend_on_index'] ) ){
+				$prepend_on_index 	= update_option( "{$this->prefix}prepend_on_index", 'yes' );
+			} else {
+				$prepend_on_index 	= update_option( "{$this->prefix}prepend_on_index", 'no' );
+			}
+
+			if( isset( $_POST['wp_ig_prepend_on_single'] ) ){
+				$prepend_on_single 	= update_option( "{$this->prefix}prepend_on_single", 'yes' );
+			} else {
+				$prepend_on_single 	= update_option( "{$this->prefix}prepend_on_single", 'no' );
+			}
 
 			if( $saving_client_id ){
 				$this->client_id = sanitize_text_field( $_POST['client_id'] );
