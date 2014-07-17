@@ -17,15 +17,38 @@ class WP_IG_Import{
 	}
 
 	/**
+	 * Initiating Instagram API
+	 * 
+	 * @return obj of Instagram API
+	 */
+	function api(){
+		$api = new WP_IG_API( get_option( "{$this->prefix}access_token" ) );
+
+		return $api;
+	}
+
+	/**
+	 * Get account information
+	 * 
+	 * @return obj of connected account
+	 */
+	function current_account(){
+
+		$account = get_option( "{$this->prefix}account" );
+
+		return $account;
+	}
+
+	/**
 	 * Pre-import message. Displaying before import message
 	 * 
 	 * @param obj account information
 	 * 
 	 * @return void
 	 */
-	function pre_import_message( $account ){
+	function pre_import_message(){
 		// Variables
-		$username 		= $account->username;
+		$username 		= $this->current_account()->username;
 		$post_type 		= get_option( 'wp_ig_post_type', 'post' );
 		$user_link 		= "<a href='http://instagram.com/{$username}' target='_blank'>@{$username}</a>";
 		$post_category 	= get_category( get_option( 'wp_ig_post_category', 1 ) );
@@ -67,8 +90,93 @@ class WP_IG_Import{
 	}
 
 	/**
-	 * Importing + print 
+	 * Importing Instagram media
+	 * 
+	 * @param array of params similar to WP_IG_API->user_media
+	 * @param bool confirming self feed
+	 * 
+	 * @return array of operation review
 	 */
+	function import_items( $user_media_param = array(), $self_feed = true ){
+		$user_media = $this->api()->user_media( $user_media_param );
+
+		if( isset( $user_media->data ) && ! empty( $user_media->data ) ){
+
+			$output = array(
+				'status' => array(
+					'duplicate' 	=> 0,
+					'success' 		=> 0,
+					'error' 		=> 0,
+				),
+				'pagination' => $user_media->pagination,
+				'count' => count( $user_media->data ),
+			);
+
+			foreach ($user_media->data as $item ){
+				
+				// Verify user based on user_id sameness (conditional)
+				if( $self_feed && ( ! isset( $item->user->id ) || intval( $item->user->id ) != intval( $this->current_account()->id ) ) )
+					continue;
+
+				// Prevent duplication
+				$existing = get_posts( array(
+					'meta_key' => '_instagram_id',
+					'meta_value' => $item->id
+				) );	
+
+				if( !empty( $existing[0]->ID ) ){
+
+					// Instagram media existed
+					$output['importing'][$item->id] = array(
+						'status' 	=> 'duplicate',
+						'permalink' => get_permalink( $existing[0]->ID ),
+						'data' 		=> $existing[0]
+					);
+
+					// Count status
+					$output['status']['duplicate'] = intval( $output['status']['duplicate'] ) + 1;
+
+				} else {
+
+					// Import Instagram media
+					$post_id = $this->import_item( $item );
+
+					if( $post_id ){
+						
+						$post = get_post( $post_id );
+
+						// Instagram media imported
+						$output['importing'][$item->id] = array(
+							'status' 	=> 'success',
+							'data' 		=> $post,
+						);	
+
+						// Count status
+						$output['status']['success'] = intval( $output['status']['success'] ) + 1;						
+
+					} else {
+
+						// Instagram media imported
+						$output['importing'][$item->id] = array(
+							'status' 	=> 'error',
+						);	
+
+						// Count status
+						$output['status']['error'] = intval( $output['status']['error'] ) + 1;
+
+					}
+
+				}				
+			}
+
+			return $output;
+
+		} else {
+
+			return new WP_Error( 400, __( 'Cannot get Instagram media', 'wp-ig' ) );
+
+		}
+	}
 
 	/**
 	 * Uploading given URL to media library
@@ -134,6 +242,9 @@ class WP_IG_Import{
 		}
 
 		$post_content	 = $this->parse_caption( $item->caption->text );
+
+		// Adding original link
+		$post_content .= '<p><cite>'. sprintf( __( 'View Original: %s', 'wp-ig' ), "<a href='{$item->link}' title='{$item->caption->text}' target='_blank'>{$item->link}</a>" ) .'</cite></p>';
 
 		$post_status	 = 'publish';
 
@@ -325,4 +436,20 @@ class WP_IG_Import{
 
 		return "<a href='$url' target='_blank' title='". sprintf( $title, substr( $name, 1 ) ) ."'>$name</a>";
 	}
+
+	/**
+	 * Get url of WP IG archive page
+	 * Note: user can set post_type and category of imported item
+	 * 
+	 * @return string of URL
+	 */
+	function get_archive_url(){
+		if( 'post' == $this->post_type ){
+			// display category archive if this post type is set to post
+			return get_category_link( $this->post_category );
+		} else {
+			// otherwise, display post type archive		
+			return get_post_type_archive_link( $this->post_type );	
+		}
+	}	
 }
