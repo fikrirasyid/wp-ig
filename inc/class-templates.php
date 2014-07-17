@@ -17,7 +17,12 @@ class WP_IG_Templates{
 		$this->access_token = get_option( "{$this->prefix}access_token" );
 		$this->api 			= new WP_IG_API( $this->access_token );
 
-		$this->base_url 	= admin_url() . 'admin.php?page=wp_ig';
+		// Define base_url based on admin or public page
+		if( is_admin() && ( !isset( $_REQUEST['action'] ) ) ){
+			$this->base_url 	= admin_url() . 'admin.php?page=wp_ig';			
+		} else {
+			$this->base_url 	= admin_url() . 'admin-ajax.php?action=instagram';
+		}
 	}	
 
 	/**
@@ -55,20 +60,18 @@ class WP_IG_Templates{
 			}
 
 			// Print more-items link
-			if( isset( $data->pagination->next_max_id ) ){
-				$more_link = $this->base_url . "&max_id=" . $data->pagination->next_max_id;
+			if( isset( $data->pagination->next_url ) ){
 
-				// Pushes more variables
-				if( isset( $_GET ) ){
+				$more_link = $this->base_url;
 
-					$qs = $_GET;
+				$more_link_query = parse_url( $data->pagination->next_url );
 
-					unset( $qs['max_id' ] );
-					unset( $qs['page' ] );
+				if( isset( $more_link_query['query'] ) ){
+					parse_str( $more_link_query['query'], $more_link_string );
 
-					foreach ($qs as $key => $qs_item) {
-						$more_link .= "&{$key}={$qs_item}";
-					}
+					unset( $more_link_string['access_token'] );
+
+					$more_link .= "&" . http_build_query( $more_link_string );
 				}
 
 				printf( __( "<a href='%s' class='more-instagram-items'>Load More</a>", "wp_ig" ), $more_link );				
