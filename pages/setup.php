@@ -38,6 +38,40 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<br>
+		<h3><?php _e( 'C. Assign Post Type and Category for Sync and Import', 'wp-ig' ); ?></h3>
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row">
+						<label for="post_type"><?php _e( 'Post Type', 'wp-ig' ); ?></label>
+					</th>
+					<td>
+						<?php 
+							$post_type_default = get_option( 'wp_ig_post_type' );
+
+							$this->settings()->select_dropdown( 'post_type', $post_type_default ); 
+						?>
+						<p class="description"><?php _e( 'Instagram media will be imported/synced as selected post type. Generally, you will want to use <strong>post</strong>.', 'wp-ig' ); ?></p>
+					</td>
+				</tr>
+				<tr id="post-category-row">
+					<th scope="row">
+						<label for="post_category"><?php _e( 'Post Category', 'wp-ig' ); ?></label>
+					</th>
+					<td>
+						<?php 
+							$category_default = get_option( 'wp_ig_post_category' );
+
+							$this->settings()->select_dropdown( 'post_category', $category_default ); 
+						?>
+						<p class="description"><?php _e( 'Instagram media will be imported/synced will be assigned to selected category', 'wp-ig' ); ?></p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 		<?php wp_nonce_field( "wp_ig_setup", "_wpnonce" ); ?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'wp-ig' ); ?>">
