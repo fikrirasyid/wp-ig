@@ -44,7 +44,7 @@ class WP_IG_Dashboard{
 	 * @return void
 	 */
 	function register_pages(){
-		add_menu_page( __( 'Instagram', 'wp_ig' ), __( 'Instagram', 'wp_ig' ), 'edit_others_posts', 'wp_ig', array( $this, 'page_main' ), 'dashicons-camera', 7 );
+		add_menu_page( __( 'Instagram', 'wp-ig' ), __( 'Instagram', 'wp-ig' ), 'edit_others_posts', 'wp_ig', array( $this, 'page_main' ), 'dashicons-camera', 7 );
 
 		// If the client ID and client secret has been saved, display edit update settings
 		if( $this->client_id && $this->client_secret && $this->client_id != '' && $this->client_secret != '' ){
