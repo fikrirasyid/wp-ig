@@ -81,4 +81,54 @@ class WP_IG_Settings{
 
 		echo "</select>";
 	}
+
+	/**
+	 * Display radio button option
+	 */
+	function radio( $args ){
+
+		// Basic default setting
+		$default = array(
+			'id' 		=> '_radio_name',
+			'options' 	=> array(
+				array(
+					'value' => 'yes',
+					'label' => __( 'Yes', 'wp-ig' )
+				),
+				array(
+					'value' => 'no',
+					'label'	=> __( 'No', 'wp-ig' )
+				)
+			),
+			'default' 	=> 'yes'
+		);
+
+		$default_option = array(
+			'value' => 'yes',
+			'label' => __( 'Yes', 'wp-ig' )
+		);
+
+		// Parse argument toward default values
+		$args = wp_parse_args( $args, $default );
+
+		extract( $args );
+
+		// Print buttons
+		foreach ( $options as $option ) {
+
+			$option = wp_parse_args( $option, $default_option );
+
+			extract( $option );
+
+			$option_id = $id . '_' . sanitize_title( $value );
+
+			?>
+				<label for="<?php echo $option_id; ?>">
+					<input type="radio" name="<?php echo $this->prefix . $id; ?>" value="<?php echo $value; ?>" id="<?php echo $option_id; ?>" <?php if( $default == $value ){ echo 'checked="checked"';}?>>
+					<?php echo $label; ?>
+				</label>
+				<br>
+			<?php
+		}
+	}
 }

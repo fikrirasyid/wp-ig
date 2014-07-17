@@ -139,12 +139,14 @@ class WP_IG_Dashboard{
 			isset( $_POST['client_secret'] ) && 
 			isset( $_POST['wp_ig_post_category'] ) &&
 			isset( $_POST['wp_ig_post_type'] ) &&
+			isset( $_POST['wp_ig_sync'] ) &&
 			isset( $_POST['_wpnonce'] ) && 
 			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_setup' ) ){
-			$saving_client_id = update_option( "{$this->prefix}client_id", sanitize_text_field( $_POST['client_id'] ) );
-			$saving_client_secret = update_option( "{$this->prefix}client_secret", sanitize_text_field( $_POST['client_secret'] ) );
-			$saving_post_type = update_option( "{$this->prefix}post_type", sanitize_text_field( $_POST['wp_ig_post_type'] ) );
-			$saving_post_category = update_option( "{$this->prefix}post_category", intval( $_POST['wp_ig_post_category'] ) );
+			$saving_client_id 		= update_option( "{$this->prefix}client_id", sanitize_text_field( $_POST['client_id'] ) );
+			$saving_client_secret 	= update_option( "{$this->prefix}client_secret", sanitize_text_field( $_POST['client_secret'] ) );
+			$saving_post_type 		= update_option( "{$this->prefix}post_type", sanitize_text_field( $_POST['wp_ig_post_type'] ) );
+			$saving_post_category 	= update_option( "{$this->prefix}post_category", intval( $_POST['wp_ig_post_category'] ) );
+			$saving_sync 			= update_option( "{$this->prefix}sync", sanitize_text_field( $_POST['wp_ig_sync'] ) );
 
 			if( $saving_client_id ){
 				$this->client_id = sanitize_text_field( $_POST['client_id'] );
