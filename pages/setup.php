@@ -1,3 +1,7 @@
+<?php
+	if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
+
 <div class="wrap">
 	<h2><?php _e( 'Setup', 'wp-ig' ); ?></h2>
 	<form action="admin.php?page=<?php echo $_GET['page']; ?>" name="form" method="post">
