@@ -125,11 +125,7 @@ class WP_IG_Templates{
 					</div>				
 				</div>
 				<?php 
-					if( isset( $item->comments->count ) ){
-						echo '<div class="comments">';
-						printf( ngettext( "%d Comment", "%d Comments", $item->comments->count ), $item->comments->count );
-						echo '</div>';
-					} 
+					$this->the_comments( $item->comments, $item->link );
 				?>
 			
 			
@@ -143,6 +139,52 @@ class WP_IG_Templates{
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Display comments
+	 * 
+	 * @param obj instagram comment object
+	 * 
+	 * @return void
+	 */
+	function the_comments( $comments, $link ){
+		if( isset( $comments->data ) && !empty( $comments->data ) ){
+
+			echo "<div class='instagram-comments'>";
+
+			foreach ( $comments->data as $comment ) {
+				?>
+
+				<div class="instagram-comment">
+					<span class="avatar">
+						<img src="<?php echo $comment->from->profile_picture; ?>" alt="<?php echo $comment->from->username; ?>">
+					</span>
+					<div class="info">
+						<div class="caption">
+							<a href="" class="username"><?php echo $comment->from->username; ?></a> <?php echo $this->parse_caption( $comment->text ); ?>
+						</div>
+					</div>
+				</div>
+
+				<?php
+			}
+
+			?>
+
+			<div class="instagram-comment">
+				<div class="info">
+					<div class="caption">
+						<a href="<?php echo $link; ?>" class="view-more-comments" target="_blank"><?php printf( ngettext( "View One More Comment", "View %d More Comments", $comments->count ), $comments->count ); ?></a>
+					</div>
+				</div>
+			</div>
+
+			<?php			
+
+			echo "</div>";
+
+		}
 	}
 
 	/**
