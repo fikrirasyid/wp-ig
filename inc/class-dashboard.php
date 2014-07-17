@@ -233,7 +233,19 @@ class WP_IG_Dashboard{
 			}
 
 			if( isset( $data->pagination->next_max_id ) ){
-				$more_link = admin_url() . "admin.php?page=wp_ig&max_id=" . $data->pagination->next_max_id;
+				$more_link = admin_url() . "admin.php?&max_id=" . $data->pagination->next_max_id;
+
+				// Pushes more variables
+				if( isset( $_GET ) ){
+
+					$qs = $_GET;
+
+					unset( $qs['max_id' ] );
+
+					foreach ($qs as $key => $qs_item) {
+						$more_link .= "&{$key}={$qs_item}";
+					}
+				}
 
 				printf( __( "<a href='%s' class='more-items'>Load More</a>", "wp_ig" ), $more_link );				
 			}
@@ -271,7 +283,7 @@ class WP_IG_Dashboard{
 							$tag_index++;
 							if( $tag_index > 1 )
 								echo ", ";
-							printf( __( "<a href='%s' title='View all #%s posts'>#%s</a>", "wp_ig" ), admin_url() . "admin.php?page=wp_ig&search=" . urlencode( $tag ), $tag, $tag );
+							printf( __( "<a href='%s' title='View all #%s posts'>#%s</a>", "wp_ig" ), admin_url() . "admin.php?page=wp_ig&tag_name=" . urlencode( $tag ), $tag, $tag );
 						}
 					?>
 				</div>
