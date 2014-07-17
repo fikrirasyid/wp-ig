@@ -101,6 +101,9 @@ class WP_IG_Templates{
 					<img src="<?php echo $item->images->standard_resolution->url; ?>" alt="<?php echo $item->caption->text; ?>">
 				<?php endif; ?>
 			</div>
+			<?php			
+				$this->the_likes( $item->likes );
+			?>
 			<div class="meta">
 				<div class="avatar">
 					<img src="<?php echo $item->user->profile_picture; ?>" alt="<?php echo $item->user->full_name; ?>">
@@ -126,19 +129,52 @@ class WP_IG_Templates{
 				</div>
 				<?php 
 					$this->the_comments( $item->comments, $item->link );
-				?>
-			
-			
-				<?php 
-					if( isset( $item->likes->count ) ){
-						echo '<div class="likes">';
-						printf( ngettext( "%d Like", "%d Likes", $item->likes->count ), $item->likes->count );
-						echo '</div>';
-					}
-				?>					
+				?>				
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Display likes
+	 * 
+	 * @param obj instagram likes object
+	 * 
+	 * @return
+	 */
+	function the_likes( $likes ){
+		if( isset( $likes->data ) && !empty( $likes->data ) ){
+			
+			echo '<div class="instagram-likes">';
+
+			$like_index = 0;
+			$like_length = count( $likes->data );
+
+			foreach ($likes->data as $like) {
+				$like_index++;
+
+				if( $like_index > 1 && $like_index == $like_length && intval( $likes->count ) < 5 ){
+					_e( ", and ", "wp_ig" );
+				} elseif( $like_index > 1 && $like_length > 2 ) {
+					echo ", ";
+				} elseif( $like_index > 1 && $like_length == 2 ){
+					_e( " and ", "wp_ig" );
+				}
+				echo "<a href='http://instagram.com/{$like->username}' target='_blank'>{$like->username}</a>";
+			}
+
+			// The after copy
+			if( $likes->count > 4 ){
+				$the_rest = intval( $likes->count ) - 4;
+				printf( __( " and %d others like this", "wp_ig" ), $the_rest );
+			} elseif( $likes->count > 1 ) {
+				_e( " like this", "wp_ig" );
+			} else {
+				_e( " likes this", "wp_ig" );
+			}
+
+			echo '</div>';
+		}
 	}
 
 	/**

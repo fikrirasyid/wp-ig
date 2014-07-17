@@ -21,10 +21,12 @@
 
 		.media{
 			width: 400px;
-			
+			height: 400px;
+
 			video,
 			img{
 				width: 100%;
+				margin-bottom: 0;
 			}
 		}
 
@@ -75,6 +77,26 @@
 	
 		.info{
 			padding:5px 10px 5px 70px;
+		}
+
+		.instagram-likes{
+			border-bottom: 1px solid #dfdfdf;
+			box-shadow: inset 0 1px 7px rgba(0,0,0,.05);			
+			font-size: 13px;
+			padding: 8px 20px;
+			color: #bfbfbf;
+			background: #fafafa;
+			line-height: 1.5;
+
+			a{
+				text-decoration: none;
+				color: #888;
+
+				&:hover{
+					color: #444;
+					text-decoration: underline;
+				}
+			}
 		}
 
 		.instagram-comments{

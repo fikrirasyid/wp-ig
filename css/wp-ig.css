@@ -21,10 +21,12 @@
 }
 .wp-ig.instagram-items .instagram-item .media {
   width: 400px;
+  height: 400px;
 }
 .wp-ig.instagram-items .instagram-item .media video,
 .wp-ig.instagram-items .instagram-item .media img {
   width: 100%;
+  margin-bottom: 0;
 }
 .wp-ig.instagram-items .instagram-item .meta {
   position: relative;
@@ -64,6 +66,23 @@
 }
 .wp-ig.instagram-items .instagram-item .info {
   padding: 5px 10px 5px 70px;
+}
+.wp-ig.instagram-items .instagram-item .instagram-likes {
+  border-bottom: 1px solid #dfdfdf;
+  box-shadow: inset 0 1px 7px rgba(0, 0, 0, 0.05);
+  font-size: 13px;
+  padding: 8px 20px;
+  color: #bfbfbf;
+  background: #fafafa;
+  line-height: 1.5;
+}
+.wp-ig.instagram-items .instagram-item .instagram-likes a {
+  text-decoration: none;
+  color: #888;
+}
+.wp-ig.instagram-items .instagram-item .instagram-likes a:hover {
+  color: #444;
+  text-decoration: underline;
 }
 .wp-ig.instagram-items .instagram-item .instagram-comments {
   border-top: 1px solid #dfdfdf;
