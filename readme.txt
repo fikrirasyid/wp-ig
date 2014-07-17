@@ -1,24 +1,17 @@
 # WP-IG
 
-Integrate your Instagram account to your WordPress site. WP-IG enables you to:
+
+Integrate your Instagram account to your WordPress site.
+
+== Description ==
+
+WP-IG enables you to:
 
 1. Display hashtag / user feed using shortcode
 2. Importing all of your Instagram photo/video
 3. Syncing your future Instagram photo/video to your site
 4. Cherry-pick your Instagram photo/video to be posted
 5. Embed other people's Instagram photo/video easily
-
-## Installation
-
-1. Put wp-ig directory on your wp-content/plugins directory
-2. Activate the plugin
-3. You will be prompted with Settings screen. Follow the instruction on the settings screen which are:
-4. Create an [Instagram client app here](http://instagram.com/developer/clients/register/). IMPORTANT: Remember to use Redirect URI given by WP-IG upon your Instagram client app registration.
-5. After registering your Instagram client app, you will get client ID and client secret of your Instagram client app. Copy and then  paste it on the WP-IG settings screen. Save the settings.
-6. After saving client ID and secret key, you'll see an oAuth authorization link. Click it to authorize your WordPress site to your Instagram account.
-7. That's that. 
-
-## WP-IG Features
 
 ### 1. Browse, Cross-Post, & Embed
 
@@ -57,3 +50,13 @@ Instead of the parameters mentioned above, you can also use
 
 [instagram cache="120"] - Get new result from API every 2 minutes
 [instagram ignore_cache="true"] - Ignore the cache and always get the result from API
+
+== Installation ==
+
+1. Put wp-ig directory on your wp-content/plugins directory
+2. Activate the plugin
+3. You will be prompted with Settings screen. Follow the instruction on the settings screen which are:
+4. Create an [Instagram client app here](http://instagram.com/developer/clients/register/). IMPORTANT: Remember to use Redirect URI given by WP-IG upon your Instagram client app registration.
+5. After registering your Instagram client app, you will get client ID and client secret of your Instagram client app. Copy and then  paste it on the WP-IG settings screen. Save the settings.
+6. After saving client ID and secret key, you'll see an oAuth authorization link. Click it to authorize your WordPress site to your Instagram account.
+7. That's that. 
