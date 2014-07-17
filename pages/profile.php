@@ -12,7 +12,10 @@
 
 	<?php 	
 
-		if( $this->current_page->query_string( 'self' ) ){
+		if( $this->current_page->query_string( 'popular' ) ){
+			// Popular Items
+			$method = "popular";
+		} elseif( $this->current_page->query_string( 'self' ) ){
 			// Self feed
 			$method = "self_feed";
 		} elseif( $this->current_page->query_string( 'tag_name' ) ){

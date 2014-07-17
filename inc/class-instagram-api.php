@@ -245,4 +245,20 @@ class WP_IG_API{
 
 		return $this->get( $endpoint, $args );
 	}
+
+	// MEDIA ---------------------------------
+
+	/**
+	 *  Get popular media
+	 * 
+	 * @param of arguments
+	 * 
+	 * @return obj
+	 */
+	function popular( $args = array() ){
+		// Define endpoints
+		$endpoint = "{$this->endpoint}media/popular?access_token={$this->access_token}";
+
+		return $this->get( $endpoint, $args );
+	}
 }
