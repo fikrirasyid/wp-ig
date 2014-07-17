@@ -33,8 +33,27 @@ class WP_IG_Templates{
 	 * 
 	 * @return void
 	 */
-	function display( $method, $args = array(), $context = false ){
+	function display( $method, $args = array(), $context = false, $title = false ){
 		$output = $this->api->$method( $args );
+
+		// Print title, optionally
+		if( $title ){
+			switch ( $method ) {
+				case 'user_media':
+					if( isset( $output->data{0}->user->username ) ){
+						echo "<h2 class='wp-ig instagram-items-title'>";
+						printf( __( "%s's Instagram Feed", "wp_ig" ), $output->data{0}->user->username  ); 			
+						echo "</h2>";
+					} else{
+						echo "<div class='clear' style='margin-top: 40px;'></div>";
+					}					
+					break;
+				
+				default:
+					// Do nothing
+					break;
+			}
+		}
 		
 		// Print output
 		$this->the_items( $output, $context );
