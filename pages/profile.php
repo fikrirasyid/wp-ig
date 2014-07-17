@@ -17,6 +17,12 @@
 				$account = false;
 			}
 
+		} elseif( $this->current_page->query_string( 'user_id' ) ) {
+
+			$user = $this->api()->user_by_id( intval( $this->current_page->query_string( 'user_id' ) ) );
+
+			$account = $user->data;
+
 		} else {
 			$account = get_option( "{$this->prefix}account" );
 		}
