@@ -116,7 +116,7 @@ class WP_IG_Templates{
 					</p>
 
 					<div class="caption">
-						<?php if( isset( $item->caption->text ) ) echo wpautop( $this->hashtagify( $item->caption->text ) ); ?>
+						<?php if( isset( $item->caption->text ) ) echo wpautop( $this->parse_caption( $item->caption->text ) ); ?>
 					</div>				
 				</div>
 				<?php 
@@ -147,8 +147,12 @@ class WP_IG_Templates{
 	 * 
 	 * @return string caption 
 	 */
-	function hashtagify( $text ){
+	function parse_caption( $text ){
 		if( isset( $text ) && $text != '' ){
+			// Parse username
+			$text = preg_replace('/@(\w+)/', "<a href='{$this->base_url}&username=$1'>@$1</a>", $text);
+
+			// Parse hashtags
 			$text = preg_replace('/#(\w+)/', "<a href='{$this->base_url}&tag_name=$1'>#$1</a>", $text);
 		}
 
