@@ -11,7 +11,11 @@
 	<h2><?php _e( "Instagram", "wp_ig" ); ?></h2>
 
 	<?php 	
-		if( $this->current_page->query_string( 'tag_name' ) ){
+
+		if( $this->current_page->query_string( 'self' ) ){
+			// Self feed
+			$method = "self_feed";
+		} elseif( $this->current_page->query_string( 'tag_name' ) ){
 			// Hashtag page		
 			$method = "tag_media";
 		} else {

@@ -30,7 +30,11 @@ class WP_IG_Public{
 	function public_page(){
 		get_header();
 
-		if( $this->current_page->query_string( 'tag_name' ) ){
+		// var_dump( $this->current_page->query_string( 'self' ) );
+		if( $this->current_page->query_string( 'self' ) ){
+			// Self feed
+			$method = "self_feed";
+		} elseif( $this->current_page->query_string( 'tag_name' ) ){
 			// Hashtag page		
 			$method = "tag_media";
 		} else {
