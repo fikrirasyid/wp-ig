@@ -28,7 +28,10 @@
 
 	<div id="feed">
 		<?php 
-			$feed = $this->api()->get_self_feed( $this->qs->max_id() ); 
+			$feed = $this->api()->get_user_media( array( 
+				'max_id' => $this->qs->max_id(),
+				'user_id' => $account->id
+			) ); 
 			$this->display_items( $feed );
 		?>
 	</div>

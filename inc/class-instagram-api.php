@@ -11,6 +11,8 @@ class WP_IG_API{
 		$this->endpoint = "https://api.instagram.com/v1/";
 	}
 
+	// GLOBAL --------------------------------
+
 	/**
 	 * Request to endpoint and parse its value
 	 * 
@@ -34,6 +36,8 @@ class WP_IG_API{
 		}
 	}
 
+	// USERS ---------------------------------
+
 	/**
 	 * Get user info based on ID
 	 * 
@@ -52,11 +56,61 @@ class WP_IG_API{
 	 * 
 	 * @return obj
 	 */
-	function get_self_feed( $max_id = false ){
+	function get_self_feed( $args ){
+
+		// Setup default values
+		$defaults = array(
+			'count' 		=> false,	
+			'min_id'		=> false,
+			'max_id'		=> false		
+		);
+
+		// parse arguments
+		$args = wp_parse_args( $args, $defaults );
+
+		// Define endpoint
 		$endpoint = "{$this->endpoint}users/self/feed?access_token=$this->access_token";
 
-		if( $max_id ){
-			$endpoint .= "&max_id={$max_id}";
+		// Pushes more parameters
+		foreach ($args as $key => $param) {
+			if( $param ){
+				$endpoint .= "&{$key}={$param}";
+			}
+		}
+
+		return $this->get( $endpoint );
+	}
+
+	/**
+	 * Get user's recent media
+	 * 
+	 * @param array of arguments
+	 * 
+	 * @return obj
+	 */
+	function get_user_media( $args ){
+
+		// Setup default values
+		$defaults = array(
+			'user_id' 		=> 0,
+			'count' 		=> false,
+			'max_timestamp' => false,
+			'min_timestamp' => false,
+			'min_id'		=> false,
+			'max_id'		=> false
+		);
+
+		// parse arguments
+		$args = wp_parse_args( $args, $defaults );
+
+		// Define endpoint
+		$endpoint = "https://api.instagram.com/v1/users/{$args['user_id']}/media/recent/?access_token={$this->access_token}";
+
+		// Pushes more parameters
+		foreach ($args as $key => $param) {
+			if( $param ){
+				$endpoint .= "&{$key}={$param}";
+			}
 		}
 
 		return $this->get( $endpoint );
