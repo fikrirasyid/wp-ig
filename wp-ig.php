@@ -24,10 +24,11 @@ class WP_IG{
 	function __construct(){
 		$this->prefix = 'wp_ig_';
 
-		register_activation_hook( __FILE__, array( $this, 'activation' ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
-
 		$this->requiring_files();
+
+		register_activation_hook( __FILE__, array( $this, 'activation' ) );
+
+		register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
 	}
 
 	/**
@@ -42,6 +43,13 @@ class WP_IG{
 
 		// Install time, for first time user
 		update_option( "{$this->prefix}install_time", current_time( 'timestamp', wp_timezone_override_offset() ) );
+
+		// flush rewrite rules, making sure that mention taxonomy can be accessed by public
+		$taxonomy = new WP_IG_Taxonomy;
+		
+		$taxonomy->register();
+
+		flush_rewrite_rules( false );
 	}
 
 	/**
@@ -60,7 +68,8 @@ class WP_IG{
 	 */
 	function requiring_files(){
 		require_once( 'inc/class-settings.php' );
-		require_once( 'inc/class-instagram-api.php' );
+		require_once( 'inc/class-instagram-api.php' );			
+		require_once( 'inc/class-taxonomy.php' );			
 		require_once( 'inc/class-import.php' );
 		require_once( 'inc/class-sync.php' );
 		require_once( 'inc/class-content.php' );
