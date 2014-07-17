@@ -8,11 +8,6 @@
 	}
 
 	// Define variables
-	$username 		= $account->username;
-	$user_link 		= "<a href='http://instagram.com/{$username}' target='_blank'>@{$username}</a>";
-	$post_type 		= get_option( 'wp_ig_post_type', 'post' );
-	$post_category 	= get_category( get_option( 'wp_ig_post_category', 1 ) );
-	$setup_url 		= admin_url() . 'admin.php?page=wp_ig_setup';
 ?>
 <div class="wrap">
 	<h2><?php _e( 'Import', 'wp-ig' ); ?></h2>	
@@ -108,7 +103,7 @@
 					// Load and import the next page
 					?>
 						<script type="text/javascript">
-							window.location = "<?php echo admin_url(); ?>admin.php?page=wp_ig_import&action=import&max_id=<?php echo $user_media->pagination->next_max_id; ?>";
+							// window.location = "<?php echo admin_url(); ?>admin.php?page=wp_ig_import&action=import&max_id=<?php echo $user_media->pagination->next_max_id; ?>";
 						</script>
 					<?php
 				} else {
@@ -119,33 +114,15 @@
 				}
 			} else {
 				// We're done here
+				echo '<p style="color: red;">';
+
+				_e( 'Cannot get content from Instagram. Please try again later', 'wp-ig' );
+
+				echo '</p>';
 			}
 
 		else: 
-	?>
-		<p><?php printf( __( "Import means importing your previous Instagram post on your Instagram account (which is %s) into WordPress' %s.", 'wp-ig' ), $user_link, $post_type ); ?></p>
-		<br>
-
-		<h3><?php _e( 'Note:', 'wp-ig' ); ?></h3>
-		<ol>
-			<li><?php printf( __( "Your Instagram media will be imported as <strong>%s</strong> post type.", 'wp-ig' ), $post_type ); ?></li>		
-			
-			<?php if( 'post' == $post_type ) : ?>
-				<li><?php printf( __( "Your Instagram media will be assigned to <strong>%s</strong> category.", 'wp-ig' ), $post_category->name ); ?></li>
-				<li><?php _e( 'Your posts which contain Instagram media will be set as <strong>image</strong> or <strong>video</strong> post format.', 'wp-ig' ); ?></li>
-			<?php endif; ?>
-
-			<li><?php printf( __( 'If you wish to change this import settings, you can change it on the <a href="%s" title="WP-IG setup page">setup page</a>.', 'wp-ig' ), $setup_url ); ?></li>
-		</ol>
-		<!-- <br> -->
-
-		<p><?php _e( 'If you are ready to import your Instagram media, click the import button below:', 'wp-ig' ); ?></p>
-		<form name="form" action="admin.php?page=wp_ig_import&action=import" method="post">
-			<p class="submit">
-				<input type="submit" id="submit" class="button button-primary" name="submit" value="<?php _e( 'Import', 'wp-ig' ); ?>">
-			</p>		
-		</form>
-	<?php 
+			$this->import()->pre_import_message( $account );
 		endif; 
 	?>
 </div>
