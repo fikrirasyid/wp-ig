@@ -111,6 +111,14 @@ class WP_IG_Dashboard{
 	}
 
 	/**
+	 * Initiating import class as method
+	 * 
+	 * @return obj WP_IG_Import
+	 */
+	function import(){
+		return new WP_IG_Import;
+	}
+
 	/**
 	 * Initiating content class as method
 	 * 
