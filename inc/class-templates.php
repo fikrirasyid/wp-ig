@@ -39,6 +39,12 @@ class WP_IG_Templates{
 		// Print title, optionally
 		if( $title ){
 			switch ( $method ) {
+				case 'tag_media':
+					if( isset( $args['tag_name'] ) ){
+						echo "<h2 class='wp-ig instagram-items-title'>#{$args['tag_name']}</h2>";						
+					}
+					break;
+
 				case 'user_media':
 					if( isset( $output->data{0}->user->username ) ){
 						echo "<h2 class='wp-ig instagram-items-title'>";
