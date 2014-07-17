@@ -68,7 +68,13 @@ class WP_IG_Templates{
 					if( $output->data{0}->user->id == $this->account->id ){
 						$user = $this->account;
 					} else {
-						$user = $this->api->user_by_id( $output->data{0}->user->id )->data;
+						$user = $this->api->user_by_id( array( 'user_id' => $output->data{0}->user->id ) )->data;
+					}
+
+					// Just in user_id data is empty
+					if( is_wp_error( $user ) ){
+						_e( "User ID cannot be empty.", "wp_ig" );
+						die();
 					}
 
 					if( isset( $user->id ) ){
