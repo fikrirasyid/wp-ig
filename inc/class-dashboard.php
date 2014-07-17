@@ -228,6 +228,7 @@ class WP_IG_Dashboard{
 	 */
 	function display_items( $data, $context = 'index' ){
 		if( isset( $data->data ) && !empty( $data->data ) ){
+
 			foreach ($data->data as $item) {
 				$this->the_item( $item, $context );		
 			}

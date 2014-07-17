@@ -4,9 +4,9 @@
   padding: 20px;
   margin: 20px auto 0;
   min-height: 100px;
-  box-shadow: 0 0 3px #cfcfcf;
-  border-radius: 2px;
-  width: 420px;
+  border: 1px solid #dfdfdf;
+  border-bottom: none;
+  width: 418px;
 }
 #current-instagram-profile .avatar {
   position: absolute;
@@ -39,6 +39,17 @@
 #deauth-instagram:hover {
   color: red;
   text-decoration: underline;
+}
+
+#feed-title {
+  width: 398px;
+  background: white;
+  margin: 0 auto;
+  padding: 15px 30px;
+  border: 1px solid #dfdfdf;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
 }
 
 #feed {
