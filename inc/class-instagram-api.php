@@ -100,7 +100,7 @@ class WP_IG_API{
 	 */
 	function user_by_id( $args ){
 
-		// Setup default values
+		// Settings default values
 		$defaults = array(
 			'user_id' => false
 		);
@@ -125,7 +125,7 @@ class WP_IG_API{
 	 */
 	function self_feed( $args ){
 
-		// Setup default values
+		// Settings default values
 		$defaults = array(
 			'count' 		=> false,	
 			'min_id'		=> false,
@@ -155,7 +155,7 @@ class WP_IG_API{
 	 */
 	function user_media( $args ){
 
-		// Setup default values
+		// Settings default values
 		$defaults = array(
 			'username'		=> false,
 			'user_id' 		=> false,
@@ -210,7 +210,7 @@ class WP_IG_API{
 	 */
 	function user_search( $args ){
 
-		// Setup default values
+		// Settings default values
 		$defaults = array(
 			'q' 		=> false,
 			'count' 	=> false
@@ -236,7 +236,7 @@ class WP_IG_API{
 	 */
 	function tag_media( $args ){
 
-		// Setup default values
+		// Settings default values
 		$defaults = array(
 			'tag_name' 		=> 0,
 			'min_id'		=> false,
@@ -277,7 +277,7 @@ class WP_IG_API{
 	 */
 	function media( $args = array() ){
 
-		// Setup defaults
+		// Settings defaults
 		$defaults = array(
 			'media_id' => ''
 		);

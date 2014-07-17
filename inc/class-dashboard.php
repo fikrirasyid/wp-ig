@@ -72,7 +72,7 @@ class WP_IG_Dashboard{
 		if( $this->client_id && 
 			$this->client_secret
 		){
-			add_submenu_page( 'wp_ig', __( 'Setup', 'wp-ig' ), __( 'Setup', 'wp-ig' ), 'edit_others_posts', 'wp_ig_setup', array( $this, 'page_setup') );			
+			add_submenu_page( 'wp_ig', __( 'Settings', 'wp-ig' ), __( 'Settings', 'wp-ig' ), 'edit_others_posts', 'wp_ig_settings', array( $this, 'page_settings') );			
 		}
 	}
 
@@ -131,7 +131,7 @@ class WP_IG_Dashboard{
 		if(	isset( $_POST['client_id'] ) && 
 			isset( $_POST['client_secret'] ) && 
 			isset( $_POST['_wpnonce'] ) && 
-			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_setup' ) 
+			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_settings' ) 
 		){
 			$saving_client_id 		= update_option( "{$this->prefix}client_id", sanitize_text_field( $_POST['client_id'] ) );
 			$saving_client_secret 	= update_option( "{$this->prefix}client_secret", sanitize_text_field( $_POST['client_secret'] ) );
@@ -142,7 +142,7 @@ class WP_IG_Dashboard{
 			isset( $_POST['wp_ig_post_type'] ) &&
 			isset( $_POST['wp_ig_sync'] ) &&
 			isset( $_POST['_wpnonce'] ) && 
-			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_setup' ) ){
+			wp_verify_nonce( $_POST['_wpnonce'], 'wp_ig_settings' ) ){
 
 			$saving_post_type 		= update_option( "{$this->prefix}post_type", sanitize_text_field( $_POST['wp_ig_post_type'] ) );
 			$saving_post_category 	= update_option( "{$this->prefix}post_category", intval( $_POST['wp_ig_post_category'] ) );
@@ -207,7 +207,7 @@ class WP_IG_Dashboard{
 	}
 
 	/**
-	 * Print main / setup page of WP-IG
+	 * Print main / settings page of WP-IG
 	 * 
 	 * @return void
 	 */
@@ -216,7 +216,7 @@ class WP_IG_Dashboard{
 			<?php
 				if( !$this->client_id || !$this->client_secret || $this->client_id == '' || $this->client_secret == '' ){
 					// First time user: create client instruction + client ID + client secret
-					include_once( WP_IG_DIR . '/pages/setup.php' );					
+					include_once( WP_IG_DIR . '/pages/settings.php' );					
 				} else {
 					// Display profile
 					include_once( WP_IG_DIR . '/pages/profile.php' );					
@@ -246,12 +246,12 @@ class WP_IG_Dashboard{
 	}
 
 	/**
-	 * Print setup page
+	 * Print settings page
 	 * 
 	 * @return void
 	 */
-	function page_setup(){
-		include_once( WP_IG_DIR . '/pages/setup.php' );
+	function page_settings(){
+		include_once( WP_IG_DIR . '/pages/settings.php' );
 	}
 
 	/**

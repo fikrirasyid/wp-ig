@@ -57,7 +57,7 @@ class WP_IG_Import{
 		$post_type 		= get_option( 'wp_ig_post_type', 'post' );
 		$user_link 		= "<a href='http://instagram.com/{$username}' target='_blank'>@{$username}</a>";
 		$post_category 	= get_category( get_option( 'wp_ig_post_category', 1 ) );
-		$setup_url 		= admin_url() . 'admin.php?page=wp_ig_setup';
+		$settings_url 		= admin_url() . 'admin.php?page=wp_ig_settings';
 
 		?>
 			<p><?php printf( __( "Import means importing your previous Instagram post on your Instagram account (which is %s) into WordPress' %s.", 'wp-ig' ), $user_link, $post_type ); ?></p>
@@ -77,7 +77,7 @@ class WP_IG_Import{
 
 				<?php endif; ?>
 
-				<li><?php printf( __( 'If you wish to change this import settings, you can change it on the <a href="%s" title="WP-IG setup page">setup page</a>.', 'wp-ig' ), $setup_url ); ?></li>
+				<li><?php printf( __( 'If you wish to change this import settings, you can change it on the <a href="%s" title="WP-IG settings page">settings page</a>.', 'wp-ig' ), $settings_url ); ?></li>
 
 			</ol>
 			<!-- <br> -->

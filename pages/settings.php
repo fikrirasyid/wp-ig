@@ -3,7 +3,7 @@
 ?>
 
 <div class="wrap">
-	<h2><?php _e( 'Setup', 'wp-ig' ); ?></h2>
+	<h2><?php _e( 'Settings', 'wp-ig' ); ?></h2>
 	<form action="admin.php?page=<?php echo $_GET['page']; ?>" name="form" method="post">
 		<?php
 
@@ -199,7 +199,7 @@
 				),
 				array(
 					'type'			=> 'p',
-					'content'		=> sprintf( __( '<a href="%s" title="Deauthorize this site from your Instagram account" id="deauth-instagram">Click here to deauthorize this site from your Instagram Account</a>.', 'wp-ig' ), admin_url() . 'admin.php?page=wp_ig_setup' )
+					'content'		=> sprintf( __( '<a href="%s" title="Deauthorize this site from your Instagram account" id="deauth-instagram">Click here to deauthorize this site from your Instagram Account</a>.', 'wp-ig' ), admin_url() . 'admin.php?page=wp_ig_settings' )
 				),
 				array(
 					'type'			=> 'p',
@@ -221,7 +221,7 @@
 
 		<?php endif; ?>
 
-		<?php wp_nonce_field( "wp_ig_setup", "_wpnonce" ); ?>
+		<?php wp_nonce_field( "wp_ig_settings", "_wpnonce" ); ?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'wp-ig' ); ?>">
 		</p>
