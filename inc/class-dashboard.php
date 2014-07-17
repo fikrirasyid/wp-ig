@@ -9,7 +9,7 @@ class WP_IG_Dashboard{
 	var $client_secret;
 	var $authorization_url;
 	var $exchange_code;
-	var $qs;
+	var $current_page;
 
 	function __construct(){
 		$this->prefix 				= 'wp_ig_';
@@ -19,7 +19,7 @@ class WP_IG_Dashboard{
 		$this->redirect_uri_encoded = urlencode( $this->redirect_uri );
 		$this->authorization_url 	= "https://api.instagram.com/oauth/authorize/?client_id={$this->client_id}&redirect_uri={$this->redirect_uri_encoded}&response_type=code";		
 		$this->exchange_code 		= get_option( "{$this->prefix}exchange_code" );
-		$this->qs 					= new WP_IG_QueryStrings;
+		$this->current_page 		= new WP_IG_Current_Page;
 
 		// If user is currently on wp_ig pages
 		if( isset( $_GET['page'] ) && substr( $_GET['page'], 0, 5 ) == "wp_ig" ){

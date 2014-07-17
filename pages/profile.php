@@ -28,8 +28,8 @@
 	
 	<h2 id='feed-title'>
 	<?php
-		if( $this->qs->get('tag_name') ){
-			echo "#{$this->qs->get('tag_name')}";
+		if( $this->current_page->query_string('tag_name') ){
+			echo "#{$this->current_page->query_string('tag_name')}";
 		} else {
 			_e( "Your Instagram Media", "wp_ig" );
 		}
@@ -38,14 +38,14 @@
 
 	<div id="feed">
 		<?php 
-			if( $this->qs->get( 'tag_name' ) ){
+			if( $this->current_page->query_string( 'tag_name' ) ){
 				$feed = $this->api()->get_tag_media( array( 
-					'max_id' => $this->qs->get( 'max_id' ),
-					'tag_name' => sanitize_text_field( $this->qs->get( 'tag_name' ) )
+					'max_id' => $this->current_page->query_string( 'max_id' ),
+					'tag_name' => sanitize_text_field( $this->current_page->query_string( 'tag_name' ) )
 				) ); 
 			} else {
 				$feed = $this->api()->get_user_media( array( 
-					'max_id' => $this->qs->get( 'max_id' ),
+					'max_id' => $this->current_page->query_string( 'max_id' ),
 					'user_id' => $account->id
 				) ); 				
 			}
