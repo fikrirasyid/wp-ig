@@ -6,6 +6,7 @@
  * Version: 0.1
  * Author: Fikri Rasyid
  * Author URI: http://fikrirasyid.com/
+ * License: GPLv2 or later
  * 
  * @package WP_IG
  * @author Fikri Rasyid
