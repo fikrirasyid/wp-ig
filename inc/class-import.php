@@ -248,7 +248,7 @@ class WP_IG_Import{
 
 		$post_status	 = 'publish';
 
-		$post_date		 = date( 'Y-m-d H:i:s', $item->created_time );
+		$post_date		 = date( 'Y-m-d H:i:s', ( intval( $item->created_time ) + ( wp_timezone_override_offset() * 60 * 60 ) ) ); // Instagram gives timestamp in GMT hence it should be adjusted to user's preference
 
 		$post_tags		 = $item->tags;
 
