@@ -154,3 +154,20 @@
 .wp-ig.instagram-items .more-instagram-items:active {
   background: #f0f0f0;
 }
+
+/**
+ * Support for small screen(s)
+ */
+@media all and (max-width: 420px) {
+  .wp-ig.instagram-items {
+    width: 90%;
+    padding: 10px;
+  }
+  .wp-ig.instagram-items .instagram-item {
+    margin-bottom: 10px;
+  }
+  .wp-ig.instagram-items .instagram-item .media {
+    width: 100%;
+    height: 100%;
+  }
+}
