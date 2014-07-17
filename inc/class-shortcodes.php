@@ -9,17 +9,23 @@ class WP_IG_Shortcodes{
 		$this->wp_ig_source_url = home_url( '/wp-admin/admin-ajax.php?action=instagram' );
 		$this->wpspin_url 	= home_url( '/wp-includes/images/wpspin-2x.gif' );
 
-		add_shortcode( 'instagram_user_media', array( $this, 'user_media' ) );
+		add_shortcode( 'instagram', array( $this, 'shortcode' ) );
 	}
 
 	/**
-	 * Display instagram feed based on username
+	 * Process the shortcode based on the variables given
+	 * 
+	 * @param array of shortcode attributes
+	 * 
+	 * @return string
 	 */
-	function user_media( $atts ){
+	function shortcode( $atts ){
 
+		// Parse args
 		$args = shortcode_atts( array(
 			'username' 		=> false,
 			'user_id' 		=> false,
+			'tag_name'		=> false,
 			'count' 		=> false,
 			'max_timestamp' => false,
 			'min_timestamp' => false,
@@ -31,8 +37,12 @@ class WP_IG_Shortcodes{
 
 		// define source url
 		$wp_ig_source_url = $this->wp_ig_source_url;
+
 		foreach ( $args as $key => $arg ) {
-			$wp_ig_source_url .= "&{$key}={$arg}";
+
+			if( $arg )
+				$wp_ig_source_url .= "&{$key}={$arg}";
+
 		}
 
 		// Request for the feed, return as string
@@ -44,7 +54,7 @@ class WP_IG_Shortcodes{
 
 		echo "</div>";
 
-		return ob_get_clean();
+		return ob_get_clean();		
 	}
 }
 new WP_IG_Shortcodes;
