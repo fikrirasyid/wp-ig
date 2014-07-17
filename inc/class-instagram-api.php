@@ -264,4 +264,26 @@ class WP_IG_API{
 
 		return $this->get( $endpoint, $args );
 	}
+
+	/**
+	 * Get media information
+	 * 
+	 * @param string object ID
+	 * 
+	 * @return obj
+	 */
+	function media( $args = array() ){
+
+		// Setup defaults
+		$defaults = array(
+			'media_id' => ''
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		// Define endpoint
+		$endpoint = "{$this->endpoint}media/{$args['media_id']}?access_token={$this->access_token}";
+
+		return $this->get( $endpoint, $args );
+	}
 }

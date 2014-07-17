@@ -26,6 +26,30 @@
   background: white;
   box-shadow: 0 0 3px #999;
   margin-bottom: 30px;
+  position: relative;
+}
+.wp-ig.instagram-items .instagram-item .actions {
+  position: absolute;
+  top: 0;
+  left: -150px;
+  width: 90px;
+  padding: 5px 15px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: right;
+}
+.wp-ig.instagram-items .instagram-item .actions a {
+  text-decoration: none;
+}
+.wp-ig.instagram-items .instagram-item .actions a.item-posted {
+  color: #bfbfbf;
+}
+.wp-ig.instagram-items .instagram-item .actions a.item-posted:hover {
+  color: #999;
+}
+.wp-ig.instagram-items .instagram-item .actions a.item-posted:active {
+  color: #afafaf;
 }
 .wp-ig.instagram-items .instagram-item .media {
   width: 400px;
