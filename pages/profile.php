@@ -26,6 +26,13 @@
 		</div>
 	</div>
 
+	<div id="feed">
+		<?php 
+			$feed = $this->api()->get_self_feed( $this->qs->max_id() ); 
+			$this->display_items( $feed );
+		?>
+	</div>
+
 	<script type="text/javascript">
 		jQuery(document).ready(function($){
 			$('#deauth-instagram').click(function(e){

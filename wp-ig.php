@@ -18,4 +18,6 @@ if (!defined('WP_IG_URL'))
 
 
 // Requiring files
+require_once( 'inc/class-instagram-api.php' );
+require_once( 'inc/class-querystrings.php' );
 require_once( 'inc/class-dashboard.php' );
