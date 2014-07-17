@@ -190,7 +190,7 @@ class WP_IG_API{
 		}
 
 		// Define endpoint
-		$endpoint = "https://api.instagram.com/v1/users/{$args['user_id']}/media/recent/?access_token={$this->access_token}";
+		$endpoint = "{$this->endpoint}users/{$args['user_id']}/media/recent/?access_token={$this->access_token}";
 
 		return $this->get( $endpoint, $args );
 	}
@@ -214,7 +214,7 @@ class WP_IG_API{
 		$args = wp_parse_args( $args, $defaults );
 
 		// Define endpoint
-		$endpoint = "https://api.instagram.com/v1/users/search?access_token={$this->access_token}";
+		$endpoint = "{$this->endpoint}users/search?access_token={$this->access_token}";
 
 		return $this->get( $endpoint, $args );
 	}
@@ -241,7 +241,7 @@ class WP_IG_API{
 		$args = wp_parse_args( $args, $defaults );
 
 		// Define endpoint
-		$endpoint = "https://api.instagram.com/v1/tags/{$args['tag_name']}/media/recent?access_token={$this->access_token}";
+		$endpoint = "{$this->endpoint}tags/{$args['tag_name']}/media/recent?access_token={$this->access_token}";
 
 		return $this->get( $endpoint, $args );
 	}
