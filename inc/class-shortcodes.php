@@ -13,20 +13,6 @@ class WP_IG_Shortcodes{
 	}
 
 	/**
-	 * Call the API
-	 */
-	function api(){
-		return new WP_IG_API( get_option( "{$this->prefix}access_token" ) );
-	}
-
-	/**
-	 * Call the template
-	 */
-	function templates(){
-		return new WP_IG_Templates();
-	}
-
-	/**
 	 * Display instagram feed based on username
 	 */
 	function user_media( $atts ){
@@ -55,8 +41,6 @@ class WP_IG_Shortcodes{
 		echo "<div class='wp-ig-wrap' data-source='{$wp_ig_source_url}'>";
 
 		echo "<p class='wp-ig-wrap-loading'><img src='{$this->wpspin_url}' width='16' height='16' class='loading' /><br /> ". __( 'Loading Instagram Contents...', 'wp_ig' ) ."</p>";
-
-		// $this->templates()->display( 'user_media', $args, false, array( 'title' => true ) );
 
 		echo "</div>";
 
