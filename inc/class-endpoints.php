@@ -156,6 +156,7 @@ class WP_IG_Endpoints{
 	 */
 	function endpoint_repost(){
 
+		echo "repost";exit;
 		// Get media data
 		$media = $this->media( 'repost' );
 
