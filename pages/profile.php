@@ -14,6 +14,24 @@
 	
 	<h2><?php _e( "Instagram", "wp_ig" ); ?></h2>
 
+	<form method="get">
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row">
+						<label for="tag_name">Search by Hashtags</label>
+					</th>
+					<td>
+						<input type="hidden" name="page" value="wp_ig">
+						<input type="text" name="tag_name" id="tag_name" placeholder="ballet, beach, etc" class="regular-text">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p class="submit">
+			<input type="submit" id="submit" class="button button-primary" value="Search">
+		</p>
+	</form>
 	<?php 	
 
 		if( $this->current_page->query_string( 'popular' ) ){
