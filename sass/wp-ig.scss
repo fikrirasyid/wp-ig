@@ -14,6 +14,35 @@
 	text-transform: uppercase;
 }
 
+.wp-ig-search{
+	display: block;
+	width: 398px;
+	padding: 10px 30px;
+	background: white;
+	margin: 0 auto;
+	border-right: 1px solid #dfdfdf;
+	border-left: 1px solid #dfdfdf;
+
+	&.user_media{
+		border-top: 1px solid #dfdfdf;		
+	}
+
+	.regular-text{
+		// width: 100%;
+		width: 326px;
+		padding: 6px 10px 5px;
+	}
+
+	.button{
+		height: 33px;
+		line-height: 31px;
+	}
+
+	label{
+		display: none;
+	}
+}
+
 .wp-ig.instagram-items{
 	width: 400px;
 	padding: 30px;

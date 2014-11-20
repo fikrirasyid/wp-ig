@@ -64,6 +64,9 @@ class WP_IG_Templates{
 				// Display tag title
 				if( $title && isset( $args['tag_name'] ) ){
 					echo "<h2 class='wp-ig instagram-items-title'>#{$args['tag_name']}</h2>";						
+
+					// Display search form
+					$this->search_form();
 				}
 				break;
 
@@ -86,6 +89,9 @@ class WP_IG_Templates{
 					}
 
 					if( isset( $user->id ) ){
+						// Display search form
+						$this->search_form( 'user_media' );
+
 						$this->the_user_profile( $user );
 					}
 
@@ -107,6 +113,9 @@ class WP_IG_Templates{
 					echo "<h2 class='wp-ig instagram-items-title'>";
 					_e( 'Your Instagram Feed', 'wp-ig' );
 					echo "</h2>";
+
+					// Display search form
+					$this->search_form();
 				}
 
 				break;
@@ -150,6 +159,25 @@ class WP_IG_Templates{
 					</div>
 				</div>
 			</div>
+		<?php
+	}
+
+	/**
+	 * Display search form
+	 * 
+	 * @access private
+	 * @return void
+	 */
+	private function search_form( $mode = 'self_feed' ){
+		?>
+
+		<form method="get" class="wp-ig-search <?php echo $mode; ?>">
+			<label for="tag_name">Search by Hashtags</label>
+			<input type="hidden" name="page" value="wp_ig">
+			<input type="text" name="tag_name" id="tag_name" placeholder="<?php _e( 'Type hashtag and press search..', 'wp-ig' ); ?>" value="<?php if ( isset( $_GET['tag_name'] ) ) echo sanitize_text_field( $_GET['tag_name'] ); ?>" class="regular-text">
+			<input type="submit" class="button button-primary" value="Search">
+		</form>		
+
 		<?php
 	}
 

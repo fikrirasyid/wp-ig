@@ -2,7 +2,7 @@
   background: #fdfdfd;
   position: relative;
   padding: 20px;
-  margin: 20px auto 0;
+  margin: 0 auto 0;
   min-height: 100px;
   border: 1px solid #dfdfdf;
   border-bottom: none;
@@ -42,6 +42,30 @@
   margin-bottom: 20px;
   border-bottom: 0;
   text-transform: uppercase;
+}
+
+.wp-ig-search {
+  display: block;
+  width: 398px;
+  padding: 10px 30px;
+  background: white;
+  margin: 0 auto;
+  border-right: 1px solid #dfdfdf;
+  border-left: 1px solid #dfdfdf;
+}
+.wp-ig-search.user_media {
+  border-top: 1px solid #dfdfdf;
+}
+.wp-ig-search .regular-text {
+  width: 326px;
+  padding: 6px 10px 5px;
+}
+.wp-ig-search .button {
+  height: 33px;
+  line-height: 31px;
+}
+.wp-ig-search label {
+  display: none;
 }
 
 .wp-ig.instagram-items {
